@@ -1,4 +1,4 @@
-import { ModalController, NavParams, ToastController } from '@ionic/angular';
+import { AlertController, ModalController, NavParams, ToastController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { UserService } from 'src/app/services/user.service';
@@ -20,6 +20,7 @@ export class ListarEquiposPage implements OnInit {
     private modal:ModalController,
     private toast:ToastController,
     private _http:HttpService,
+    public alertController:AlertController,
     private _geo:GeolocationService) { 
 
     this.alertaID = navParams.get('alerta');
@@ -43,26 +44,47 @@ export class ListarEquiposPage implements OnInit {
     })
   }
   async seleccion(equipo){
-    let input ={
-      alerta:this.alertaID,
-      usuario:this._user.user.rut,
-      seleccion:'dea',
-      equipo:equipo.id
-    }
-    this._http.ingresoHistorial(input).subscribe(async (res)=>{
-      this.modal.dismiss();
-      console.log(res)
-      console.log('Confirm Okay');
-      const toast = await this.toast.create({
-        header: 'Gracias!!',
-        message: 'Se ha notificado a todos',
-        position: 'top',
-        duration: 2000
-      });
-      await toast.present();
-      let url = 'https://www.google.com/maps/dir/'+this._geo.lat+','+this._geo.lon+'/'+equipo.lat+','+equipo.lng+'/@'+equipo.lat+','+equipo.lng+',12z';
-      window.open(url, "_blank");
-    })
+    const alert = await this.alertController.create({
+      cssClass: 'confirmaDEA',
+      header: 'Confirmar!',
+      message: 'Confirma si vas a ir a buscar el DEA!!!',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'OK', 
+          handler: async () => {            
+            let input ={
+              alerta:this.alertaID,
+              usuario:this._user.user.rut,
+              seleccion:'dea',
+              equipo:equipo.id
+            }
+            this._http.ingresoHistorial(input).subscribe(async (res)=>{
+              this.modal.dismiss();
+              console.log(res)
+              console.log('Confirm Okay');
+              const toast = await this.toast.create({
+                header: 'Gracias!!',
+                message: 'Se ha notificado a todos',
+                position: 'top',
+                duration: 2000
+              });
+              await toast.present();
+              let url = 'https://www.google.com/maps/dir/'+this._geo.lat+','+this._geo.lon+'/'+equipo.lat+','+equipo.lng+'/@'+equipo.lat+','+equipo.lng+',12z';
+              window.open(url, "_blank");
+            })
+          }
+        }
+      ]
+    });
+    await alert.present();
+    
     /*console.log(data)
     this.socket.emit('alerta:ingresoHistorial', data);
     this.modal.dismiss();

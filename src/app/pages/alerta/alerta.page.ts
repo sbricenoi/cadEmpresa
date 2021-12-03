@@ -78,7 +78,7 @@ export class AlertaPage implements OnInit {
     });
   }  
   async enviar(){   
-    let input = {usuario:this._user.rut}
+    let input = {usuario:this._user.user.rut}
     this._geo.generaAlerta(input).subscribe(async (res) => {  
       console.log(res) 
       if(res.resultado=="OK"){

@@ -22,7 +22,8 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
     if(this._user.validaStorage()){
-      this.router.navigateByUrl('/bienvenida');    }    
+      this.router.navigateByUrl('/bienvenida');    
+    }    
   }
   login(){
     console.log(this.rut)

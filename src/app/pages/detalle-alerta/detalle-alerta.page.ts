@@ -32,10 +32,10 @@ export class DetalleAlertaPage implements OnInit {
   myOpt = {label:'',icon:'https://maps.google.com/mapfiles/arrow.png'};
   
   
-  equipoa ={name:'', position: { lat: this._geo.lat-0.00034, lng: this._geo.lon+0.0054 }};
-  equipoaOp = {label:'',icon:'https://www.google.com/mapfiles/markerA.png'};
-  equipob ={name:'', position: { lat: this._geo.lat+0.00024, lng: this._geo.lon-0.0044 }};
-  equipobOp = {label:'',icon:'https://www.google.com/mapfiles/markerB.png'};
+  //equipoa ={name:'', position: { lat: this._geo.lat-0.00034, lng: this._geo.lon+0.0054 }};
+ // equipoaOp = {label:'',icon:'https://www.google.com/mapfiles/markerA.png'};
+  //equipob ={name:'', position: { lat: this._geo.lat+0.00024, lng: this._geo.lon-0.0044 }};
+  //equipobOp = {label:'',icon:'https://www.google.com/mapfiles/markerB.png'};
   estadoAlerta = 1;
 
   constructor(private socket: Socket,
