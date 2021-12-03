@@ -1,0 +1,27 @@
+<ion-header [translucent]="true">
+  <ion-toolbar  class="new-background-color">
+    <ion-title>
+      Home   
+    </ion-title>
+    <ion-button slot="end" (click)="openMenu()">
+      <ion-icon  name="menu-outline"></ion-icon>     
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true"  *ngIf="_user.empresa">
+<ion-list>
+  <ion-list-header>
+    Alertas Recientes
+  </ion-list-header>
+
+  <ion-item *ngFor="let alerta of alertas" routerLink="/detalle-alerta/{{alerta.id}}">
+    <ion-label>
+      <h2>{{alerta.lat}} / {{alerta.lng}}</h2>
+      <p>{{alerta.fecha}}</p>
+    </ion-label>
+  </ion-item>
+</ion-list>
+</ion-content>
+
+

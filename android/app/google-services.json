@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "172098245835",
+    "project_id": "cadempresa-b3af2",
+    "storage_bucket": "cadempresa-b3af2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:172098245835:android:42dbbb6cee7d94b7fc374e",
+        "android_client_info": {
+          "package_name": "com.cadempresa.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "172098245835-31pp23g3ejq2lfg09alfhldtipun5cpu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0fUQg8VczLcqE_ixL3We-SCOz8-u93gg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "172098245835-31pp23g3ejq2lfg09alfhldtipun5cpu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

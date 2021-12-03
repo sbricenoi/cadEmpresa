@@ -1,0 +1,52 @@
+ion-card div.avatar {
+    display: inline-block;
+    width: 40%;
+    text-align: center;
+}
+ion-card div.avatar img {
+    width: 70%;
+    //margin: 0 15%;
+}
+ion-card div.info {
+    display: inline-block;
+    width: 60%;
+    vertical-align: top;
+}
+ion-card-title.ion-inherit-color.ios.hydrated {
+    font-size: 13px;
+}
+ion-card-subtitle.ion-inherit-color.ios.hydrated {
+    font-size: 11px !important;
+    text-transform: lowercase;
+}
+ion-card {
+    --background: #ecf1fb;
+}
+.reserva-modal{
+    --background:#c200d4 !important;
+}
+ion-content{
+    --background:#c200d4 !important;
+    .cerrar{
+        border: #fff solid 1px;
+        border-radius: 10px;
+    }
+}
+
+.modal-wrapper {
+    background: #c200d4 !important;
+  }
+  .formulario{
+      ion-button{
+          margin-bottom: 15px;
+      }
+      ion-list{
+          ion-item{
+            margin-bottom: 15px;
+          }
+      }
+      ion-button{
+          --background:#5501bc;
+      }
+  }
+  /* Works - pass "my-custom-class" in cssClass to increase specificity */

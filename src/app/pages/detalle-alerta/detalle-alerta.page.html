@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar class="ion-padding">
+    <div class="info">
+      <ion-icon (click)="close()" name="chevron-back-outline" routerLink="/equipos"></ion-icon>
+      
+      <span class="details">
+        <h1>Emergencia  {{alertaID}}</h1>
+        <p>hace 40 min</p>
+      </span>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="my-google-map">
+    <google-map [options]="mapOptions" width="100%" height="300px">
+      <map-marker *ngFor="let marker of markers;let i=index" [position]="marker.position" [options]="markerOptions[i]"></map-marker>
+    </google-map>
+  </div>
+  <ion-card>
+      <ion-button (click)="reanimacion()" fill="outline" color="primary" expand="full">Reanimación</ion-button>
+      <ion-button (click)="deas(1)" fill="outline" color="secondary" expand="full">Buscar DEA</ion-button>
+      <ion-button (click)="cancelar(1)" expand="full" >Cancelar Emergencia</ion-button>
+    <ion-card-content>
+      <ion-list>
+        <ion-list-header>
+          Historial de acciones
+        </ion-list-header>
+
+        <ion-item *ngFor="let hist of historial">
+          <ion-label>
+            <h2>{{hist.nombre}}</h2>
+            <h3>{{hist.accion}}</h3>
+            <h3>{{hist.direccion}}</h3>
+            <p>{{hist.fecha}}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>    
+  </ion-card>
+  <ion-card class="cancelada" *ngIf="estadoAlerta!=1">
+    <div>
+      <ion-card-title>Emergencia Cancelada</ion-card-title>
+      <ion-button (click)="close()" expand="full">Salir</ion-button>
+    </div>    
+  </ion-card>
+</ion-content>

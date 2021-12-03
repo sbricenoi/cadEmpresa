@@ -1,0 +1,39 @@
+<ion-content class="ion-padding" color="primary"> 
+  <ion-button expand="block" (click)="cerrar()" class="ion-margin-top cerrar"  color="primary">Cerrar</ion-button>
+
+  <ion-card class="ion-padding">
+    
+    <div class="avatar">
+      <ion-avatar>
+        <img src="{{reserva.avatar}}" />
+      </ion-avatar>
+      
+    </div>
+    <div class="info">      
+      <ion-card-title>{{reserva.nombre}} {{reserva.apellido}}</ion-card-title>
+      <ion-card-subtitle>{{reserva.correo}}</ion-card-subtitle>
+      <ion-card-subtitle>{{reserva.telefono}}</ion-card-subtitle>
+      <ion-button fill="outline" size="small" color="success" *ngIf="reserva.reservado==true">RESERVADO</ion-button>
+      <ion-button fill="outline" size="small" color="warning" *ngIf="reserva.reservado==false">SIN RESERVA</ion-button>
+    </div>
+    
+  </ion-card>
+
+  <ion-card  class="ion-padding formulario">
+    <ion-button expand="full" color="success">Sin Sintomas</ion-button>
+
+    <ion-list>
+      <ion-item *ngFor="let entry of form">
+        <ion-label>{{entry.val}}</ion-label>
+        <ion-checkbox slot="end" id="{{entry.val}}" (ionChange)="cambia($event)" [(ngModel)]="entry.isChecked"></ion-checkbox>
+      </ion-item>
+      <ion-item>
+        <ion-label  >Temperatura</ion-label>
+        <ion-input type="number" id="temperatura" (keyup)="cambia($event)" [(ngModel)]="temperatura" ></ion-input>
+      </ion-item>
+      <ion-button shape="round" expand="full"  (click)="guardar()">Guardar</ion-button>
+    </ion-list>
+
+    
+  </ion-card>
+</ion-content>

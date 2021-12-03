@@ -1,0 +1,7 @@
+{
+  "name": "cadEmpresa",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

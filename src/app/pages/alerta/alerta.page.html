@@ -1,0 +1,23 @@
+<ion-header [translucent]="true">
+  <ion-toolbar  class="new-background-color">
+    <ion-title>
+      Alerta   
+    </ion-title>
+    <ion-button slot="end" (click)="openMenu()">
+      <ion-icon  name="menu-outline"></ion-icon>     
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <button class="alerta" (click)="alerta()" > Alertar </button>
+
+  <div *ngIf="inicio"  style="text-align: center;">
+    <p>se enviará una alerta en:</p>
+    <h1>{{segundos}}</h1>
+    <p>si desea cancelar haga click en el siguiente boton</p>
+    <ion-button expand="full" color="primary" (click)="cancelar()" > Cancelar </ion-button>
+  </div>
+  
+</ion-content>

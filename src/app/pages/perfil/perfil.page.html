@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar class="ion-padding">
+    <div class="info">
+      <ion-icon name="chevron-back-outline" routerLink="/tabs/home"></ion-icon>
+      
+      <span class="details">
+        <h1>Perfil</h1>
+      </span>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Tu información</ion-card-subtitle>
+      <ion-card-title>Tus datos actuales</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Nombre</ion-label>
+        <ion-input value="{{_user.user.nombre}}"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Apellido</ion-label>
+        <ion-input  value="{{_user.user.apellido}}"></ion-input>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>GPS Tiempo Real</ion-card-subtitle>
+      <ion-card-title>Tus coordenadas actuales</ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content>
+      <ion-card-subtitle>Latitud: {{_geo.lat}}</ion-card-subtitle>
+      <ion-card-subtitle>Logitud: {{_geo.lon}}</ion-card-subtitle>
+    </ion-card-content>
+  </ion-card>
+
+  <div class="my-google-map">
+    <google-map [options]="mapOptions"  width="100%" height="200px">
+      <map-marker *ngFor="let marker of markers;let i=index" [position]="marker.position" [options]="markerOptions[i]"></map-marker>
+    </google-map>
+  </div>
+</ion-content>

@@ -1,0 +1,39 @@
+<ion-header [translucent]="true">
+  <ion-toolbar  class="new-background-color">
+    <ion-title>
+      Equipos   
+    </ion-title>
+    <ion-button slot="end" (click)="openMenu()">
+      <ion-icon  name="menu-outline"></ion-icon>     
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="banner">
+    <img src="https://image.freepik.com/vector-gratis/banner-digital-futurista-tecnologia-elemento-hud_1017-26316.jpg" />
+    <div class="caption ion-padding">
+      Equipos disponibles 
+    </div>
+    <!--<div class="search">
+    <ion-item lines="none" class="ion-no-padding">
+        <ion-icon class="holder" slot="start" name="search-outline"></ion-icon>
+        <ion-input placeholder="Buscar equipos"></ion-input>
+        <ion-button slot="end">
+          <ion-icon name="filter-outline"></ion-icon>
+        </ion-button>
+    </ion-item>  
+    </div>-->
+  </div>
+  <div class="listBusiness ion-padding">
+    <div class="cardBusiness" *ngFor="let equipo of equipos">
+      <div class="infoBusiness">
+        <ion-label class="nameBusiness">{{equipo.codigo}}</ion-label>
+        <ion-label class="smallBusiness">{{equipo.direccion}} </ion-label>
+      </div>
+      <ion-button slot="end" (click)="detalle(equipo.id)">
+          <ion-icon name="chevron-forward-circle-outline"></ion-icon>
+      </ion-button>
+    </div>    
+  </div>
+</ion-content>

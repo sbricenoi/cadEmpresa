@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar class="ion-padding">
+    <div class="info">
+      <ion-icon (click)="close()" name="chevron-back-outline"></ion-icon>
+      
+      <span class="details">
+        <h1>{{equipo.codigo}}</h1>
+        <p>activo</p>
+      </span>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="my-google-map">
+    <google-map [options]="mapOptions"  width="100%" height="200px">
+      <map-marker *ngFor="let marker of markers;let i=index" [position]="marker.position" [options]="markerOptions[i]"></map-marker>
+    </google-map>
+  </div>
+  <ion-card>
+    <ion-item>
+      <ion-icon name="locate-outline" slot="start"></ion-icon>
+      <ion-label>{{equipo.codigo}}</ion-label>
+      <ion-button fill="outline" color="success" slot="end">Activo</ion-button>
+    </ion-item>
+  
+    <ion-card-content>
+      <p>{{equipo.direccion}}</p>
+      <p>{{equipo.detalle}}</p>
+    </ion-card-content>
+
+    <ion-item>
+      <ion-button fill="outline" color="primary" slot="start">Contactar Proveedor</ion-button>
+      <ion-button fill="outline" color="danger" slot="end">Solicitar Eliminación</ion-button>
+    </ion-item>
+  </ion-card>
+</ion-content>

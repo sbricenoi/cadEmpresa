@@ -1,0 +1,13 @@
+
+ion-tab-bar.md.hydrated {
+    padding: 5px;
+}
+ion-tab-button {
+    background: transparent;
+    color: #5501bc;
+    border-left:#5501bc solid 1px;
+    height: 90%;
+}
+ion-tab-button:first-child {
+    border-left:none;
+}

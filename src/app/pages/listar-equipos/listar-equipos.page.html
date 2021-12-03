@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>listarEquipos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="listBusiness ion-padding">
+    <div class="cardBusiness" *ngFor="let eq of equipos">
+      <img src="https://www.google.com/mapfiles/marker{{eq.letra}}.png" />
+      <div class="infoBusiness">
+        <ion-label class="nameBusiness">{{eq.direccion}}</ion-label>
+        <ion-label class="smallBusiness">{{eq.detalle}} </ion-label>
+      </div>
+      <ion-button slot="end" (click)="seleccion(eq)">
+          <ion-icon name="chevron-forward-circle-outline"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
+</ion-content>
