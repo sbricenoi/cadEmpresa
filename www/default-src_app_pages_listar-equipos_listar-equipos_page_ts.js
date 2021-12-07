@@ -3975,13 +3975,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let ListarEquiposPage = class ListarEquiposPage {
-    constructor(_user, socket, navParams, modal, toast, _http, _geo) {
+    constructor(_user, socket, navParams, modal, toast, _http, alertController, _geo) {
         this._user = _user;
         this.socket = socket;
         this.navParams = navParams;
         this.modal = modal;
         this.toast = toast;
         this._http = _http;
+        this.alertController = alertController;
         this._geo = _geo;
         this.equipos = [];
         this.alertaID = navParams.get('alerta');
@@ -4004,26 +4005,47 @@ let ListarEquiposPage = class ListarEquiposPage {
     }
     seleccion(equipo) {
         return (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__awaiter)(this, void 0, void 0, function* () {
-            let input = {
-                alerta: this.alertaID,
-                usuario: this._user.user.rut,
-                seleccion: 'dea',
-                equipo: equipo.id
-            };
-            this._http.ingresoHistorial(input).subscribe((res) => (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__awaiter)(this, void 0, void 0, function* () {
-                this.modal.dismiss();
-                console.log(res);
-                console.log('Confirm Okay');
-                const toast = yield this.toast.create({
-                    header: 'Gracias!!',
-                    message: 'Se ha notificado a todos',
-                    position: 'top',
-                    duration: 2000
-                });
-                yield toast.present();
-                let url = 'https://www.google.com/maps/dir/' + this._geo.lat + ',' + this._geo.lon + '/' + equipo.lat + ',' + equipo.lng + '/@' + equipo.lat + ',' + equipo.lng + ',12z';
-                window.open(url, "_blank");
-            }));
+            const alert = yield this.alertController.create({
+                cssClass: 'confirmaDEA',
+                header: 'Confirmar!',
+                message: 'Confirma si vas a ir a buscar el DEA!!!',
+                buttons: [
+                    {
+                        text: 'Cancelar',
+                        role: 'cancel',
+                        cssClass: 'secondary',
+                        handler: (blah) => {
+                            console.log('Confirm Cancel: blah');
+                        }
+                    },
+                    {
+                        text: 'OK',
+                        handler: () => (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__awaiter)(this, void 0, void 0, function* () {
+                            let input = {
+                                alerta: this.alertaID,
+                                usuario: this._user.user.rut,
+                                seleccion: 'dea',
+                                equipo: equipo.id
+                            };
+                            this._http.ingresoHistorial(input).subscribe((res) => (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__awaiter)(this, void 0, void 0, function* () {
+                                this.modal.dismiss();
+                                console.log(res);
+                                console.log('Confirm Okay');
+                                const toast = yield this.toast.create({
+                                    header: 'Gracias!!',
+                                    message: 'Se ha notificado a todos',
+                                    position: 'top',
+                                    duration: 2000
+                                });
+                                yield toast.present();
+                                let url = 'https://www.google.com/maps/dir/' + this._geo.lat + ',' + this._geo.lon + '/' + equipo.lat + ',' + equipo.lng + '/@' + equipo.lat + ',' + equipo.lng + ',12z';
+                                window.open(url, "_blank");
+                            }));
+                        })
+                    }
+                ]
+            });
+            yield alert.present();
             /*console.log(data)
             this.socket.emit('alerta:ingresoHistorial', data);
             this.modal.dismiss();
@@ -4046,6 +4068,7 @@ ListarEquiposPage.ctorParameters = () => [
     { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_7__.ModalController },
     { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_7__.ToastController },
     { type: src_app_services_http_service__WEBPACK_IMPORTED_MODULE_3__.HttpService },
+    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_7__.AlertController },
     { type: src_app_services_geolocation_service__WEBPACK_IMPORTED_MODULE_4__.GeolocationService }
 ];
 ListarEquiposPage = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([

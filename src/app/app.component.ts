@@ -3,9 +3,10 @@ import { Component } from '@angular/core';
 import {
   ActionPerformed,
   PushNotifications,
+  PushNotificationSchema,
   Token
 } from '@capacitor/push-notifications';
-import { MenuController, Platform } from '@ionic/angular';
+import { AlertController, MenuController, Platform } from '@ionic/angular';
 import { NotificationService } from './services/notification.service';
 
 import { Geolocation } from '@capacitor/geolocation';
@@ -20,7 +21,7 @@ import { HttpService } from './services/http.service';
 export class AppComponent {
   coords: any;
   center:any;
-  constructor(public _user:UserService,public _http:HttpService,public platform:Platform,public _notification:NotificationService,public menu:MenuController,public _geo:GeolocationService,private _route:Router) {}
+  constructor(public alertController:AlertController,public _user:UserService,public _http:HttpService,public platform:Platform,public _notification:NotificationService,public menu:MenuController,public _geo:GeolocationService,private _route:Router) {}
   ngOnInit() {
     console.log('Initializing HomePage');
     if(this._user.validaStorage()){
@@ -68,20 +69,37 @@ export class AppComponent {
       })
       //console.log('Push registration success, token: ' + token.value)
     })
-
-    PushNotifications.addListener(
-      'pushNotificationActionPerformed',
-      (notification: ActionPerformed) => {
-        //alert(JSON.stringify(notification));
-        //alert(notification.notification.data.vista)
-        if(notification.notification.data.vista){
-          if(notification.notification.data.id){
-            this._route.navigateByUrl('/'+notification.notification.data.vista+"/"+notification.notification.data.id);
+    PushNotifications.addListener('pushNotificationReceived',
+      async (notification: PushNotificationSchema) => {
+        const alert = await this.alertController.create({
+          cssClass: 'confirmaAlerta',
+          header: notification.data.title,
+          message: notification.data.body,
+          buttons: [
+            {
+              text: 'Cancelar',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: (blah) => {
+                console.log('Confirm Cancel: blah');
+              }
+            }, {
+              text: 'OK', 
+              handler: async () => {
+                this._route.navigateByUrl('/'+notification.data.vista+"/"+notification.data.id);                
+              }
+            }
+          ]
+        });
+    
+        await alert.present();
+       /* if(notification.data.message.title){
+          if(notification.data.id){
+            
           }else{
-            this._route.navigateByUrl('/'+notification.notification.data.vista);
-          }
-          
-        }
+            this._route.navigateByUrl('/'+notification.data.vista);
+          }          
+        }*/
         /*{"actionId":"tap",
             "notification":{
               "id":"0:1636941734614872%729f83c3729f83c3",
@@ -105,6 +123,19 @@ export class AppComponent {
             }
           }
         */
+        console.log('Push received: ' + JSON.stringify(notification));
+      }
+    );
+    PushNotifications.addListener(
+      'pushNotificationActionPerformed',
+      (notification: ActionPerformed) => {
+        if(notification.notification.data.vista){
+          if(notification.notification.data.id){
+            this._route.navigateByUrl('/'+notification.notification.data.vista+"/"+notification.notification.data.id);
+          }else{
+            this._route.navigateByUrl('/'+notification.notification.data.vista);
+          }          
+        }
         console.log('Push action performed: ' + JSON.stringify(notification));
       },
     );

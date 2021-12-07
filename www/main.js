@@ -162,7 +162,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let AppComponent = class AppComponent {
-    constructor(_user, _http, platform, _notification, menu, _geo, _route) {
+    constructor(alertController, _user, _http, platform, _notification, menu, _geo, _route) {
+        this.alertController = alertController;
         this._user = _user;
         this._http = _http;
         this.platform = platform;
@@ -217,17 +218,36 @@ let AppComponent = class AppComponent {
             });
             //console.log('Push registration success, token: ' + token.value)
         });
-        _capacitor_push_notifications__WEBPACK_IMPORTED_MODULE_2__.PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
-            //alert(JSON.stringify(notification));
-            //alert(notification.notification.data.vista)
-            if (notification.notification.data.vista) {
-                if (notification.notification.data.id) {
-                    this._route.navigateByUrl('/' + notification.notification.data.vista + "/" + notification.notification.data.id);
-                }
-                else {
-                    this._route.navigateByUrl('/' + notification.notification.data.vista);
-                }
-            }
+        _capacitor_push_notifications__WEBPACK_IMPORTED_MODULE_2__.PushNotifications.addListener('pushNotificationReceived', (notification) => (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__awaiter)(this, void 0, void 0, function* () {
+            const alert = yield this.alertController.create({
+                cssClass: 'confirmaAlerta',
+                header: notification.data.title,
+                message: notification.data.body,
+                buttons: [
+                    {
+                        text: 'Cancelar',
+                        role: 'cancel',
+                        cssClass: 'secondary',
+                        handler: (blah) => {
+                            console.log('Confirm Cancel: blah');
+                        }
+                    },
+                    {
+                        text: 'OK',
+                        handler: () => (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__awaiter)(this, void 0, void 0, function* () {
+                            this._route.navigateByUrl('/' + notification.data.vista + "/" + notification.data.id);
+                        })
+                    }
+                ]
+            });
+            yield alert.present();
+            /* if(notification.data.message.title){
+               if(notification.data.id){
+                 
+               }else{
+                 this._route.navigateByUrl('/'+notification.data.vista);
+               }
+             }*/
             /*{"actionId":"tap",
                 "notification":{
                   "id":"0:1636941734614872%729f83c3729f83c3",
@@ -251,6 +271,17 @@ let AppComponent = class AppComponent {
                 }
               }
             */
+            console.log('Push received: ' + JSON.stringify(notification));
+        }));
+        _capacitor_push_notifications__WEBPACK_IMPORTED_MODULE_2__.PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
+            if (notification.notification.data.vista) {
+                if (notification.notification.data.id) {
+                    this._route.navigateByUrl('/' + notification.notification.data.vista + "/" + notification.notification.data.id);
+                }
+                else {
+                    this._route.navigateByUrl('/' + notification.notification.data.vista);
+                }
+            }
             console.log('Push action performed: ' + JSON.stringify(notification));
         });
     }
@@ -275,6 +306,7 @@ let AppComponent = class AppComponent {
     }
 };
 AppComponent.ctorParameters = () => [
+    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_9__.AlertController },
     { type: _services_user_service__WEBPACK_IMPORTED_MODULE_6__.UserService },
     { type: _services_http_service__WEBPACK_IMPORTED_MODULE_7__.HttpService },
     { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_9__.Platform },
