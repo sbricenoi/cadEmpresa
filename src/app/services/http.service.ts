@@ -7,10 +7,10 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 export class HttpService {
   private _api = 'https://maqueta.onlineweb.cl/api.php';
   private _apiTest = 'https://cad.onlineweb.cl/prueba_api.php';
-  private _apiProd = 'https://cad.onlineweb.cl/api.php';
+  private _apiProd = 'https://cad.onlineweb.cl/prueba_api.php';
   constructor(private httpClient: HttpClient) { }
 
- /*public login(input:any){    
+ public login(input:any){    
     input.accion = "login";
     
     let params = JSON.stringify(input);
@@ -29,7 +29,7 @@ export class HttpService {
         headers.append('Access-Control-Allow-Credentials', 'true');
     console.log("params:",params)
     return this.httpClient.post<any>(this._apiTest,params,{headers:headers});   
-  }*/
+  }
   /*public prueba(input:any){    
     input.accion = "";
     
@@ -40,6 +40,7 @@ export class HttpService {
     console.log("params:",params)
     return this.httpClient.post<any>(this._api,params,{headers:headers});   
   }*/
+  /*
   public login(input:any){    
     input.accion = "login";
     
@@ -60,6 +61,7 @@ export class HttpService {
     console.log("params:",params)
     return this.httpClient.post<any>(this._api,params,{headers:headers});   
   }
+  */
   public getEmpresas(input:any){    
     input.accion = "getEmpresas";
     input.usuario = 123;

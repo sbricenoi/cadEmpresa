@@ -25,6 +25,7 @@ export class LoginPage implements OnInit {
       this.router.navigateByUrl('/bienvenida');    
     }    
   }
+/*
   login(){
     console.log(this.rut)
     let input = {rut:this.rut,pass:this.pass};
@@ -68,8 +69,8 @@ export class LoginPage implements OnInit {
       }
     })
    
-  }
-  /*login(){ //API DANIEL
+  }*/
+  login(){ //API DANIEL
     //console.log(this.rut)
     let input = {rut:this.rut,clave:this.pass};
     this._http.login(input).subscribe((res)=>{
@@ -114,7 +115,7 @@ export class LoginPage implements OnInit {
       }
     })
    
-  }*/
+  }
 
   setRut(valor){
     this.rut = valor;
