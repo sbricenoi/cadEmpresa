@@ -11,7 +11,7 @@ export class HttpService {
   constructor(private httpClient: HttpClient) { }
 
  public login(input:any){    
-    input.accion = "login";
+    input.accion = "login_empresa";
     
     let params = JSON.stringify(input);
     let headers = new HttpHeaders().set('Content-type','application/json');

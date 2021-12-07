@@ -56,6 +56,8 @@ export class AppComponent {
       apellido:null
     }
     localStorage.removeItem('user');
+    localStorage.removeItem('empresas');
+    localStorage.removeItem('empresa');
     this.closeMenu()
   }
   addListeners(){

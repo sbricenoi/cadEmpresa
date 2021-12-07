@@ -8,9 +8,15 @@
 <ion-content [fullscreen]="true">
   <img src="../../assets/logo/LogoCAD5.png" class="logo" width="30%"/>
   <p class="texto-intro">Selecciona la empresa con la que vas a utilizar la aplicación de empresa</p>
-  <ion-card (click)="redirec('vitaltime')">
+  
+  <!--<ion-card (click)="redirec('vitaltime')">
     <img src="https://www.vitaltime.cl/wp-content/uploads/2021/02/LOGO-VT-180.png" width="50%"/>
     <ion-card-title>Vital Time</ion-card-title>
-  </ion-card>
+  </ion-card>-->
   
+  <ion-card *ngFor="let em of empresas" (click)="redirec(em.id_empresa)">
+    <img src="https://cad.onlineweb.cl/{{em.logo_empresa}}" width="50%"/>
+    <ion-card-title>{{em.nombre_empresa}}</ion-card-title>
+  </ion-card>
+
 </ion-content>

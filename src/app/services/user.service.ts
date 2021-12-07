@@ -11,6 +11,7 @@ export class UserService {
   public logeado;
   public user:any;
   public empresa;
+  public empresas;
   
   constructor() { }
 

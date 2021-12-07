@@ -80,12 +80,13 @@ export class LoginPage implements OnInit {
         this._user.rut = res.resultado.persona.rut_persona;
         this._user.nombre = res.resultado.persona.nombre_persona;
         this._user.apellido = res.resultado.persona.apellido_persona;
-        this.user = res.resultado.persona;     
+        this.user = res.resultado.persona;   
+        this._user.empresas = res.resultado.empresas;   
         //console.log(this.user)
         this._user.user = this.user;
         console.log(this._user.user)
         localStorage.setItem('user',JSON.stringify(this.user));
-
+        localStorage.setItem('empresas',JSON.stringify(this._user.empresas));
 
         let input = {token: this._notification.token,usuario:this._user.user.id_persona}
         let center = {
@@ -100,13 +101,13 @@ export class LoginPage implements OnInit {
         this._http.ingresoToken(input).subscribe((res)=>{
           console.log(res)
           //if(res.resultado == "OK"){      
-          if(res.resultado.message == "Operation done successfully"){
+          //if(res.message == "Operation done successfully"){
             if(this._user.validaStorage()){
               this.router.navigate(["/bienvenida"]);
             }
-          }else{
+         /* }else{
             console.log(res)
-          }
+          }*/
          
         })
         
