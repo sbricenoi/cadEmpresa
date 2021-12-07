@@ -15,7 +15,7 @@ export class HttpService {
     
     let params = JSON.stringify(input);
     let headers = new HttpHeaders().set('Content-type','application/json');
-        headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
+        headers.append('Access-Control-Allow-Origin', '*');
         headers.append('Access-Control-Allow-Credentials', 'true');
     console.log("params:",params)
     return this.httpClient.post<any>(this._apiProd,params,{headers:headers});   
@@ -28,7 +28,7 @@ export class HttpService {
         headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
         headers.append('Access-Control-Allow-Credentials', 'true');
     console.log("params:",params)
-    return this.httpClient.post<any>(this._apiTest,params,{headers:headers});   
+    return this.httpClient.post<any>(this._apiProd,params,{headers:headers});   
   }
   /*public prueba(input:any){    
     input.accion = "";

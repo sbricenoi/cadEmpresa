@@ -74,7 +74,7 @@ export class LoginPage implements OnInit {
     //console.log(this.rut)
     let input = {rut:this.rut,clave:this.pass};
     this._http.login(input).subscribe((res)=>{
-      //console.log(res)
+      console.log(res)
       if(res.resultado.persona.id_persona != null){
         //console.log(res.usuario)
         this._user.rut = res.resultado.persona.rut_persona;
