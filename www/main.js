@@ -802,7 +802,7 @@ let HttpService = class HttpService {
         return this.httpClient.post(this._apiProd, params, { headers: headers });
     }
     getEquipo(input) {
-        input.accion = "getEquipo";
+        input.accion = "detalle_equipo";
         let params = JSON.stringify(input);
         let headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_0__.HttpHeaders().set('Content-type', 'application/json');
         headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
@@ -843,6 +843,24 @@ let HttpService = class HttpService {
     }
     ingresoHistorial(input) {
         input.accion = "insertar_historico";
+        let params = JSON.stringify(input);
+        let headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_0__.HttpHeaders().set('Content-type', 'application/json');
+        headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
+        headers.append('Access-Control-Allow-Credentials', 'true');
+        console.log("params:", params);
+        return this.httpClient.post(this._apiProd, params, { headers: headers });
+    }
+    setPerfil(input) {
+        input.accion = "actualizar_persona";
+        let params = JSON.stringify(input);
+        let headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_0__.HttpHeaders().set('Content-type', 'application/json');
+        headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
+        headers.append('Access-Control-Allow-Credentials', 'true');
+        console.log("params:", params);
+        return this.httpClient.post(this._apiProd, params, { headers: headers });
+    }
+    setPass(input) {
+        input.accion = "actualizar_pass";
         let params = JSON.stringify(input);
         let headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_0__.HttpHeaders().set('Content-type', 'application/json');
         headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');

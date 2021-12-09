@@ -153,11 +153,11 @@ let EquiposPage = class EquiposPage {
             this._http.getEquipos(input).subscribe((res) => (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__awaiter)(this, void 0, void 0, function* () {
                 console.log(res);
                 if (res.resultado == "OK") {
-                    for (let e = 0; e < res.equipos.length; e++) {
-                        this.equipos.push(res.equipos[e]);
+                    for (let e = 0; e < res.equipos.data.length; e++) {
+                        this.equipos.push(res.equipos.data[e]);
                     }
                 }
-                //console.log(this.equipos)
+                console.log(this.equipos);
             }));
         });
     }
@@ -207,7 +207,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("<ion-header [translucent]=\"true\">\n  <ion-toolbar  class=\"new-background-color\">\n    <ion-title>\n      Equipos   \n    </ion-title>\n    <ion-button slot=\"end\" (click)=\"openMenu()\">\n      <ion-icon  name=\"menu-outline\"></ion-icon>     \n    </ion-button>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content [fullscreen]=\"true\">\n  <div class=\"banner\">\n    <img src=\"https://image.freepik.com/vector-gratis/banner-digital-futurista-tecnologia-elemento-hud_1017-26316.jpg\" />\n    <div class=\"caption ion-padding\">\n      Equipos disponibles \n    </div>\n    <!--<div class=\"search\">\n    <ion-item lines=\"none\" class=\"ion-no-padding\">\n        <ion-icon class=\"holder\" slot=\"start\" name=\"search-outline\"></ion-icon>\n        <ion-input placeholder=\"Buscar equipos\"></ion-input>\n        <ion-button slot=\"end\">\n          <ion-icon name=\"filter-outline\"></ion-icon>\n        </ion-button>\n    </ion-item>  \n    </div>-->\n  </div>\n  <div class=\"listBusiness ion-padding\">\n    <div class=\"cardBusiness\" *ngFor=\"let equipo of equipos\">\n      <div class=\"infoBusiness\">\n        <ion-label class=\"nameBusiness\">{{equipo.codigo}}</ion-label>\n        <ion-label class=\"smallBusiness\">{{equipo.direccion}} </ion-label>\n      </div>\n      <ion-button slot=\"end\" (click)=\"detalle(equipo.id)\">\n          <ion-icon name=\"chevron-forward-circle-outline\"></ion-icon>\n      </ion-button>\n    </div>    \n  </div>\n</ion-content>\n");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("<ion-header [translucent]=\"true\">\n  <ion-toolbar  class=\"new-background-color\">\n    <ion-title>\n      Equipos   \n    </ion-title>\n    <ion-button slot=\"end\" (click)=\"openMenu()\">\n      <ion-icon  name=\"menu-outline\"></ion-icon>     \n    </ion-button>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content [fullscreen]=\"true\">\n  <div class=\"banner\">\n    <img src=\"https://image.freepik.com/vector-gratis/banner-digital-futurista-tecnologia-elemento-hud_1017-26316.jpg\" />\n    <div class=\"caption ion-padding\">\n      Equipos disponibles \n    </div>\n    <!--<div class=\"search\">\n    <ion-item lines=\"none\" class=\"ion-no-padding\">\n        <ion-icon class=\"holder\" slot=\"start\" name=\"search-outline\"></ion-icon>\n        <ion-input placeholder=\"Buscar equipos\"></ion-input>\n        <ion-button slot=\"end\">\n          <ion-icon name=\"filter-outline\"></ion-icon>\n        </ion-button>\n    </ion-item>  \n    </div>-->\n  </div>\n  <div class=\"listBusiness ion-padding\">\n    <div class=\"cardBusiness\" *ngFor=\"let equipo of equipos\">\n      <div class=\"infoBusiness\">\n        <ion-label class=\"nameBusiness\">{{equipo.serie_equipo}}</ion-label>\n        <ion-label class=\"smallBusiness\">{{equipo.direccion_equipo}} </ion-label>\n      </div>\n      <ion-button slot=\"end\" (click)=\"detalle(equipo.id_equipo)\">\n          <ion-icon name=\"chevron-forward-circle-outline\"></ion-icon>\n      </ion-button>\n    </div>    \n  </div>\n</ion-content>\n");
 
 /***/ })
 

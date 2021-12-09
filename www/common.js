@@ -490,15 +490,15 @@ let DetalleEquipoPage = class DetalleEquipoPage {
             };
             this._http.getEquipo(input).subscribe((res) => (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__awaiter)(this, void 0, void 0, function* () {
                 console.log(res);
-                if (res.resultado == "OK") {
-                    this.equipo = res.equipo;
+                if (res.error == null) {
+                    this.equipo = res.resultado.data[0];
                     this.mapOptions = {
-                        center: { lat: parseFloat(this.equipo.lat), lng: parseFloat(this.equipo.lng) },
-                        zoom: 14,
+                        center: { lat: parseFloat(this.equipo.latitud), lng: parseFloat(this.equipo.longitud) },
+                        zoom: 16,
                         minZoom: 12,
-                        maxZoom: 16
+                        maxZoom: 18
                     };
-                    this.myLocation = { name: '', position: { lat: parseFloat(this.equipo.lat), lng: parseFloat(this.equipo.lng) } };
+                    this.myLocation = { name: '', position: { lat: parseFloat(this.equipo.latitud), lng: parseFloat(this.equipo.longitud) } };
                     yield this.generarPuntos(res.cerca);
                     console.log(this.equipo);
                 }
@@ -728,7 +728,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("<ion-header>\n  <ion-toolbar class=\"ion-padding\">\n    <div class=\"info\">\n      <ion-icon (click)=\"close()\" name=\"chevron-back-outline\"></ion-icon>\n      \n      <span class=\"details\">\n        <h1>{{equipo.codigo}}</h1>\n        <p>activo</p>\n      </span>\n    </div>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <div class=\"my-google-map\">\n    <google-map [options]=\"mapOptions\"  width=\"100%\" height=\"200px\">\n      <map-marker *ngFor=\"let marker of markers;let i=index\" [position]=\"marker.position\" [options]=\"markerOptions[i]\"></map-marker>\n    </google-map>\n  </div>\n  <ion-card>\n    <ion-item>\n      <ion-icon name=\"locate-outline\" slot=\"start\"></ion-icon>\n      <ion-label>{{equipo.codigo}}</ion-label>\n      <ion-button fill=\"outline\" color=\"success\" slot=\"end\">Activo</ion-button>\n    </ion-item>\n  \n    <ion-card-content>\n      <p>{{equipo.direccion}}</p>\n      <p>{{equipo.detalle}}</p>\n    </ion-card-content>\n\n    <ion-item>\n      <ion-button fill=\"outline\" color=\"primary\" slot=\"start\">Contactar Proveedor</ion-button>\n      <ion-button fill=\"outline\" color=\"danger\" slot=\"end\">Solicitar Eliminación</ion-button>\n    </ion-item>\n  </ion-card>\n</ion-content>\n");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("<ion-header>\n  <ion-toolbar class=\"ion-padding\">\n    <div class=\"info\">\n      <ion-icon (click)=\"close()\" name=\"chevron-back-outline\"></ion-icon>\n      \n      <span class=\"details\">\n        <h1>{{equipo.serie_equipo}}</h1>\n        <p>activo</p>\n      </span>\n    </div>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <div class=\"my-google-map\">\n    <google-map [options]=\"mapOptions\"  width=\"100%\" height=\"200px\">\n      <map-marker *ngFor=\"let marker of markers;let i=index\" [position]=\"marker.position\" [options]=\"markerOptions[i]\"></map-marker>\n    </google-map>\n  </div>\n  <ion-card>\n    <ion-item>\n      <ion-icon name=\"locate-outline\" slot=\"start\"></ion-icon>\n      <ion-label>{{equipo.serie_equipo}}</ion-label>\n      <ion-button fill=\"outline\" color=\"success\" slot=\"end\">Activo</ion-button>\n    </ion-item>\n  \n    <ion-card-content>\n      <p>{{equipo.direccion_equipo}}</p>\n      <p>{{equipo.detalle_equipo}}</p>\n    </ion-card-content>\n\n    <ion-item>\n      <ion-button fill=\"outline\" color=\"primary\" slot=\"start\">Contactar Proveedor</ion-button>\n      <ion-button fill=\"outline\" color=\"danger\" slot=\"end\">Solicitar Eliminación</ion-button>\n    </ion-item>\n  </ion-card>\n</ion-content>\n");
 
 /***/ }),
 

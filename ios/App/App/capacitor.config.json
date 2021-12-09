@@ -1,0 +1,6 @@
+{
+	"appId": "com.cadempresa.app",
+	"appName": "cadEmpresa",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
