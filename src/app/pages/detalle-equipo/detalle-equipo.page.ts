@@ -35,15 +35,15 @@ export class DetalleEquipoPage implements OnInit {
     }
     this._http.getEquipo(input).subscribe(async (res)=>{
       console.log(res)
-      if(res.resultado=="OK"){
-          this.equipo = res.equipo;
+      if(res.error==null){
+          this.equipo = res.resultado.data[0];
           this.mapOptions =  {
-            center: { lat:  parseFloat(this.equipo.lat), lng: parseFloat(this.equipo.lng) },
-            zoom : 14,
+            center: { lat:  parseFloat(this.equipo.latitud), lng: parseFloat(this.equipo.longitud) },
+            zoom : 16,
             minZoom:12,
-            maxZoom:16
+            maxZoom:18
           }
-          this.myLocation = {name:'', position: { lat: parseFloat(this.equipo.lat), lng: parseFloat(this.equipo.lng) }}
+          this.myLocation = {name:'', position: { lat: parseFloat(this.equipo.latitud), lng: parseFloat(this.equipo.longitud) }}
           await this.generarPuntos(res.cerca);
           console.log(this.equipo)
       }

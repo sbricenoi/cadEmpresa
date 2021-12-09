@@ -4,7 +4,7 @@
       <ion-icon (click)="close()" name="chevron-back-outline"></ion-icon>
       
       <span class="details">
-        <h1>{{equipo.codigo}}</h1>
+        <h1>{{equipo.serie_equipo}}</h1>
         <p>activo</p>
       </span>
     </div>
@@ -20,13 +20,13 @@
   <ion-card>
     <ion-item>
       <ion-icon name="locate-outline" slot="start"></ion-icon>
-      <ion-label>{{equipo.codigo}}</ion-label>
+      <ion-label>{{equipo.serie_equipo}}</ion-label>
       <ion-button fill="outline" color="success" slot="end">Activo</ion-button>
     </ion-item>
   
     <ion-card-content>
-      <p>{{equipo.direccion}}</p>
-      <p>{{equipo.detalle}}</p>
+      <p>{{equipo.direccion_equipo}}</p>
+      <p>{{equipo.detalle_equipo}}</p>
     </ion-card-content>
 
     <ion-item>

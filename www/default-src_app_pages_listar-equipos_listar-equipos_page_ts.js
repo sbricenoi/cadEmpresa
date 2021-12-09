@@ -3991,7 +3991,7 @@ let ListarEquiposPage = class ListarEquiposPage {
         //this.socket.connect();   
         //this.socket.emit('alerta:listarHistorial', {alerta:this.alertaID});  
         let input = {
-            alerta: this.alertaID
+            id_alerta: this.alertaID
         };
         this._http.getDetalleAlerta(input).subscribe((res) => (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__awaiter)(this, void 0, void 0, function* () {
             console.log(JSON.stringify(res));
@@ -4023,7 +4023,7 @@ let ListarEquiposPage = class ListarEquiposPage {
                         handler: () => (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__awaiter)(this, void 0, void 0, function* () {
                             let input = {
                                 alerta: this.alertaID,
-                                usuario: this._user.user.rut,
+                                usuario: this._user.user.id_persona,
                                 seleccion: 'dea',
                                 equipo: equipo.id
                             };

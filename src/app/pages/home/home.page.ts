@@ -34,13 +34,13 @@ ngOnInit(){
   let input = {
     usuario:this._user.user.rut
   }
-  this._http.getAlertas(input).subscribe(async (res)=>{
+  /*this._http.getAlertas(input).subscribe(async (res)=>{
     console.log(JSON.stringify(res))
     console.log(res)    
     for(let e=0;e<res.alertas.length;e++){
       this.alertas.push(res.alertas[e]);
     }
     console.log(this.alertas)
-  })
+  })*/
 }
 }

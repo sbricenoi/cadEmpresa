@@ -6,8 +6,8 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 })
 export class HttpService {
   private _api = 'https://maqueta.onlineweb.cl/api.php';
-  private _apiTest = 'https://cad.onlineweb.cl/prueba_api.php';
-  private _apiProd = 'https://cad.onlineweb.cl/prueba_api.php';
+  private _apiTest = 'https://cad.onlineweb.cl/prueba_api_sb.php';
+  private _apiProd = 'https://cad.onlineweb.cl/prueba_api_sb.php';
   constructor(private httpClient: HttpClient) { }
 
  public login(input:any){    
@@ -30,7 +30,8 @@ export class HttpService {
     console.log("params:",params)
     return this.httpClient.post<any>(this._apiProd,params,{headers:headers});   
   }
-  /*public prueba(input:any){    
+  /*
+  public prueba(input:any){    
     input.accion = "";
     
     let params = JSON.stringify(input);
@@ -70,7 +71,7 @@ export class HttpService {
         headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
         headers.append('Access-Control-Allow-Credentials', 'true');
     console.log("params:",params)
-    return this.httpClient.post<any>(this._api,params,{headers:headers});   
+    return this.httpClient.post<any>(this._apiProd,params,{headers:headers});   
   }
   public getAlertas(input:any){    
     input.accion = "getAlertas";
@@ -79,43 +80,43 @@ export class HttpService {
         headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
         headers.append('Access-Control-Allow-Credentials', 'true');
     console.log("params:",params)
-    return this.httpClient.post<any>(this._api,params,{headers:headers});   
+    return this.httpClient.post<any>(this._apiProd,params,{headers:headers});   
   }
   public getDetalleAlerta(input:any){    
-    input.accion = "getAlerta";
+    input.accion = "detalle_alerta";
     let params = JSON.stringify(input);
     let headers = new HttpHeaders().set('Content-type','application/json');
         headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
         headers.append('Access-Control-Allow-Credentials', 'true');
     console.log("params:",params)
-    return this.httpClient.post<any>(this._api,params,{headers:headers});   
+    return this.httpClient.post<any>(this._apiProd,params,{headers:headers});   
   }
   public getEquipos(input:any){    
-    input.accion = "getEquipos";
+    input.accion = "listar_equipos_all";
     let params = JSON.stringify(input);
     let headers = new HttpHeaders().set('Content-type','application/json');
         headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
         headers.append('Access-Control-Allow-Credentials', 'true');
     console.log("params:",params)
-    return this.httpClient.post<any>(this._api,params,{headers:headers});   
+    return this.httpClient.post<any>(this._apiProd,params,{headers:headers});   
   }
   public getEquipo(input:any){    
-    input.accion = "getEquipo";
+    input.accion = "detalle_equipo";
     let params = JSON.stringify(input);
     let headers = new HttpHeaders().set('Content-type','application/json');
         headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
         headers.append('Access-Control-Allow-Credentials', 'true');
     console.log("params:",params)
-    return this.httpClient.post<any>(this._api,params,{headers:headers});   
+    return this.httpClient.post<any>(this._apiProd,params,{headers:headers});   
   }
   public cancelarAlerta(input:any){    
-    input.accion = "cancelarAlerta";
+    input.accion = "cancelar_empergencia";
     let params = JSON.stringify(input);
     let headers = new HttpHeaders().set('Content-type','application/json');
         headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
         headers.append('Access-Control-Allow-Credentials', 'true');
     console.log("params:",params)
-    return this.httpClient.post<any>(this._api,params,{headers:headers});   
+    return this.httpClient.post<any>(this._apiProd,params,{headers:headers});   
   }
   public seleccionarAccion(input:any){    
     input.accion = "seleccionarAccion";
@@ -129,24 +130,42 @@ export class HttpService {
         headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
         headers.append('Access-Control-Allow-Credentials', 'true');
     console.log("params:",params)
-    return this.httpClient.post<any>(this._api,params,{headers:headers});   
+    return this.httpClient.post<any>(this._apiProd,params,{headers:headers});   
   }
   public getHistorial(input:any){    
-    input.accion = "getHistorial";
+    input.accion = "listar_historico_alerta";
     let params = JSON.stringify(input);
     let headers = new HttpHeaders().set('Content-type','application/json');
         headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
         headers.append('Access-Control-Allow-Credentials', 'true');
     console.log("params:",params)
-    return this.httpClient.post<any>(this._api,params,{headers:headers});   
+    return this.httpClient.post<any>(this._apiProd,params,{headers:headers});   
   }
   public ingresoHistorial(input:any){    
-    input.accion = "seleccionaAccion";
+    input.accion = "insertar_historico";
     let params = JSON.stringify(input);
     let headers = new HttpHeaders().set('Content-type','application/json');
         headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
         headers.append('Access-Control-Allow-Credentials', 'true');
     console.log("params:",params)
-    return this.httpClient.post<any>(this._api,params,{headers:headers});   
+    return this.httpClient.post<any>(this._apiProd,params,{headers:headers});   
+  }
+  public setPerfil(input:any){    
+    input.accion = "actualizar_persona";
+    let params = JSON.stringify(input);
+    let headers = new HttpHeaders().set('Content-type','application/json');
+        headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
+        headers.append('Access-Control-Allow-Credentials', 'true');
+    console.log("params:",params)
+    return this.httpClient.post<any>(this._apiProd,params,{headers:headers});   
+  }
+  public setPass(input:any){    
+    input.accion = "actualizar_pass";
+    let params = JSON.stringify(input);
+    let headers = new HttpHeaders().set('Content-type','application/json');
+        headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
+        headers.append('Access-Control-Allow-Credentials', 'true');
+    console.log("params:",params)
+    return this.httpClient.post<any>(this._apiProd,params,{headers:headers});   
   }
 }

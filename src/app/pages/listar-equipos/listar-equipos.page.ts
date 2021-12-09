@@ -31,7 +31,7 @@ export class ListarEquiposPage implements OnInit {
     //this.socket.connect();   
     //this.socket.emit('alerta:listarHistorial', {alerta:this.alertaID});  
     let input = {
-      alerta:this.alertaID
+      id_alerta:this.alertaID
     }
     this._http.getDetalleAlerta(input).subscribe(async (res)=>{
       console.log(JSON.stringify(res))
@@ -61,7 +61,7 @@ export class ListarEquiposPage implements OnInit {
           handler: async () => {            
             let input ={
               alerta:this.alertaID,
-              usuario:this._user.user.rut,
+              usuario:this._user.user.id_persona,
               seleccion:'dea',
               equipo:equipo.id
             }

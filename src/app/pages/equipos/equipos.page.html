@@ -28,10 +28,10 @@
   <div class="listBusiness ion-padding">
     <div class="cardBusiness" *ngFor="let equipo of equipos">
       <div class="infoBusiness">
-        <ion-label class="nameBusiness">{{equipo.codigo}}</ion-label>
-        <ion-label class="smallBusiness">{{equipo.direccion}} </ion-label>
+        <ion-label class="nameBusiness">{{equipo.serie_equipo}}</ion-label>
+        <ion-label class="smallBusiness">{{equipo.direccion_equipo}} </ion-label>
       </div>
-      <ion-button slot="end" (click)="detalle(equipo.id)">
+      <ion-button slot="end" (click)="detalle(equipo.id_equipo)">
           <ion-icon name="chevron-forward-circle-outline"></ion-icon>
       </ion-button>
     </div>    

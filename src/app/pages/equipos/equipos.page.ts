@@ -33,6 +33,7 @@ export class EquiposPage implements OnInit {
       console.log("sin empresa seleccionada")
       this.router.navigate(['/bienvenida']);
     }
+    console.log("comienza lista")
     this.listar()
   }
   openMenu() {
@@ -43,14 +44,13 @@ export class EquiposPage implements OnInit {
     let input = {
     }
     this._http.getEquipos(input).subscribe(async (res)=>{
-      //console.log(res)
+      console.log(res)
       if(res.resultado=="OK"){
-        for(let e=0;e<res.equipos.length;e++){
-          this.equipos.push(res.equipos[e]);
+        for(let e=0;e<res.equipos.data.length;e++){
+          this.equipos.push(res.equipos.data[e]);
         }
-      }
-      
-      //console.log(this.equipos)
+      }       
+      console.log(this.equipos)
     })
   }
 }

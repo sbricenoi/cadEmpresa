@@ -52,16 +52,17 @@ export class DetalleAlertaPage implements OnInit {
   ngOnInit() {
     this.alertaID = this.router.snapshot.paramMap.get('alerta');
     let input = {
-      alerta:this.alertaID
+      id_alerta:this.alertaID
     }
     this._http.getDetalleAlerta(input).subscribe(async (res)=>{
       console.log(JSON.stringify(res))
       console.log(res)
-      this.estadoAlerta = res.estado;
+      //res = res.data;
+      this.estadoAlerta = res.data.estado;
       console.log(this.estadoAlerta)
-      this.lngAlerta = parseFloat(res.lng);
-      this.latAlerta = parseFloat(res.lat);
-
+      this.lngAlerta = parseFloat(res.data.longitud);
+      this.latAlerta = parseFloat(res.data.latitud);
+      console.log(this.lngAlerta,this.latAlerta )
       await this.generarPuntos(res.equipos);     
       await this.recalcular();
       //this.historial = res.historial;
@@ -90,9 +91,12 @@ export class DetalleAlertaPage implements OnInit {
     setInterval(()=>{
       if(this.alertaID!=null&&this.alertaID!=""){
         this._http.getHistorial(input).subscribe((res)=>{
-          this.historial = []
-          for(let c=0;c<res.historial.length;c++){
-              this.historial.push(res.historial[c]);
+          console.log(res)
+          if(res.historial.length>0){            
+            this.historial = []
+            for(let c=0;c<res.historial.length;c++){
+                this.historial.push(res.historial[c]);
+            }
           }
         })
       }
@@ -144,7 +148,7 @@ export class DetalleAlertaPage implements OnInit {
               //this.socket.emit('alerta:ingresoHistorial', data);
               let input = {
                 alerta:this.alertaID,
-                usuario:this._user.user.rut,
+                usuario:this._user.user.id_persona,
                 seleccion:'reanimar',
                 equipo:null
               }
@@ -179,9 +183,9 @@ export class DetalleAlertaPage implements OnInit {
               this._http.cancelarAlerta(input).subscribe(async (res)=>{
                 console.log(JSON.stringify(res))
                 console.log(res)
-                if(res.resultado=="OK"){
+                if(res.data==1){
                   const toast = await this.toastController.create({
-                    header:'Emergencia Cancelad',
+                    header:'Emergencia Cancelada',
                     message: 'se ha cancelado la emergencia',
                     position: 'bottom',
                     duration: 3000,
@@ -189,6 +193,7 @@ export class DetalleAlertaPage implements OnInit {
                     translucent:true
                   });
                   await toast.present();
+                  this.close()
                 }               
               })
               
@@ -201,9 +206,9 @@ export class DetalleAlertaPage implements OnInit {
               this._http.cancelarAlerta(input).subscribe(async (res)=>{
                 console.log(JSON.stringify(res))
                 console.log(res)
-                if(res.resultado=="OK"){
+                if(res.data==1){
                   const toast = await this.toastController.create({
-                    header:'Emergencia Cancelad',
+                    header:'Emergencia Cancelada',
                     message: 'se ha cancelado la emergencia',
                     position: 'bottom',
                     duration: 3000,
@@ -211,7 +216,8 @@ export class DetalleAlertaPage implements OnInit {
                     translucent:true
                   });
                   await toast.present();
-                }               
+                  this.close()
+                }                  
               })
               
             }
@@ -223,9 +229,9 @@ export class DetalleAlertaPage implements OnInit {
               this._http.cancelarAlerta(input).subscribe(async (res)=>{
                 console.log(JSON.stringify(res))
                 console.log(res)
-                if(res.resultado=="OK"){
+                if(res.data==1){
                   const toast = await this.toastController.create({
-                    header:'Emergencia Cancelad',
+                    header:'Emergencia Cancelada',
                     message: 'se ha cancelado la emergencia',
                     position: 'bottom',
                     duration: 3000,
@@ -233,7 +239,8 @@ export class DetalleAlertaPage implements OnInit {
                     translucent:true
                   });
                   await toast.present();
-                }               
+                  this.close()
+                }                   
               })
               
             }
@@ -245,9 +252,9 @@ export class DetalleAlertaPage implements OnInit {
               this._http.cancelarAlerta(input).subscribe(async (res)=>{
                 console.log(JSON.stringify(res))
                 console.log(res)
-                if(res.resultado=="OK"){
+                if(res.data==1){
                   const toast = await this.toastController.create({
-                    header:'Emergencia Cancelad',
+                    header:'Emergencia Cancelada',
                     message: 'se ha cancelado la emergencia',
                     position: 'bottom',
                     duration: 3000,
@@ -255,7 +262,8 @@ export class DetalleAlertaPage implements OnInit {
                     translucent:true
                   });
                   await toast.present();
-                }               
+                  this.close()
+                }                    
               })
               
             }
@@ -298,7 +306,8 @@ export class DetalleAlertaPage implements OnInit {
     }
   
     async generarPuntos(puntosRes){
-
+        console.log("generando puntos equipos")
+        console.log(puntosRes)
         let emergencia ={name:'', position: { lat: this.latAlerta, lng: this.lngAlerta }};
         let emergenciaOp = {label:'',icon:'https://www.google.com/mapfiles/dd-start.png'};
         //creamos marker mi ubicación        
@@ -315,14 +324,16 @@ export class DetalleAlertaPage implements OnInit {
         this.markers.push(this.equipob);
         this.markerOptions.push(this.equipobOp);*/
         for(let p=0;p<puntos.length;p++){
-          let icono = 'https://www.google.com/mapfiles/marker'+puntos[p].letra+'.png';
-          let punto = {
-            name:'',
-            position: { lat: parseFloat(puntos[p].lat), lng: parseFloat(puntos[p].lng)}
-          }
-          let puntoOp = {label:'',icon:icono}
-          this.markers.push(punto);
-          this.markerOptions.push(puntoOp);
+          if(puntos[p].lat!=null &&puntos[p].lng!=null){
+            let icono = 'https://www.google.com/mapfiles/marker'+puntos[p].letra+'.png';
+            let punto = {
+              name:'',
+              position: { lat: parseFloat(puntos[p].lat), lng: parseFloat(puntos[p].lng)}
+            }
+            let puntoOp = {label:'',icon:icono}
+            this.markers.push(punto);
+            this.markerOptions.push(puntoOp);
+          }          
           
         }
         console.log(this.markers)

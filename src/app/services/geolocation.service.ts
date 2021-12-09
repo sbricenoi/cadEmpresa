@@ -31,28 +31,28 @@ export class GeolocationService {
     this.lat = cord.lat;
     this.lon = cord.lng;
 
-    input.accion = "ingresoGPS";
-    input.lat = this.lat;
-    input.lng =  this.lon;
+    input.accion = "ingreso_gps";
+    input.latitud = this.lat;
+    input.longitud =  this.lon;
     input.tokenNotification = this._notification.token;
     let params = JSON.stringify(input);
     let headers = new HttpHeaders().set('Content-type','application/json');
         headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
         headers.append('Access-Control-Allow-Credentials', 'true');
     console.log("params:",params)
-    return this.httpClient.post<any>("https://maqueta.onlineweb.cl/api.php",params,{headers:headers});   
+    return this.httpClient.post<any>("https://cad.onlineweb.cl/prueba_api_sb.php",params,{headers:headers});   
     //console.log(cord)
   }
   public generaAlerta(input:any){    
-    input.accion = "generaAlerta";
-    input.lat = this.lat;
-    input.lng =  this.lon;
+    input.accion = "ingresar_alerta";
+    input.latitud = this.lat;
+    input.longitud =  this.lon;
     input.tokenNotification = this._notification.token;
     let params = JSON.stringify(input);
     let headers = new HttpHeaders().set('Content-type','application/json');
         headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
         headers.append('Access-Control-Allow-Credentials', 'true');
     console.log("params:",params)
-    return this.httpClient.post<any>("https://maqueta.onlineweb.cl/api.php",params,{headers:headers});   
+    return this.httpClient.post<any>("https://cad.onlineweb.cl/prueba_api_sb.php",params,{headers:headers});   
   }
 }

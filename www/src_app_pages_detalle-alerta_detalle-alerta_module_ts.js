@@ -156,15 +156,17 @@ let DetalleAlertaPage = class DetalleAlertaPage {
     ngOnInit() {
         this.alertaID = this.router.snapshot.paramMap.get('alerta');
         let input = {
-            alerta: this.alertaID
+            id_alerta: this.alertaID
         };
         this._http.getDetalleAlerta(input).subscribe((res) => (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__awaiter)(this, void 0, void 0, function* () {
             console.log(JSON.stringify(res));
             console.log(res);
-            this.estadoAlerta = res.estado;
+            //res = res.data;
+            this.estadoAlerta = res.data.estado;
             console.log(this.estadoAlerta);
-            this.lngAlerta = parseFloat(res.lng);
-            this.latAlerta = parseFloat(res.lat);
+            this.lngAlerta = parseFloat(res.data.longitud);
+            this.latAlerta = parseFloat(res.data.latitud);
+            console.log(this.lngAlerta, this.latAlerta);
             yield this.generarPuntos(res.equipos);
             yield this.recalcular();
             //this.historial = res.historial;
@@ -192,9 +194,12 @@ let DetalleAlertaPage = class DetalleAlertaPage {
         setInterval(() => {
             if (this.alertaID != null && this.alertaID != "") {
                 this._http.getHistorial(input).subscribe((res) => {
-                    this.historial = [];
-                    for (let c = 0; c < res.historial.length; c++) {
-                        this.historial.push(res.historial[c]);
+                    console.log(res);
+                    if (res.historial.length > 0) {
+                        this.historial = [];
+                        for (let c = 0; c < res.historial.length; c++) {
+                            this.historial.push(res.historial[c]);
+                        }
                     }
                 });
             }
@@ -247,7 +252,7 @@ let DetalleAlertaPage = class DetalleAlertaPage {
                             //this.socket.emit('alerta:ingresoHistorial', data);
                             let input = {
                                 alerta: this.alertaID,
-                                usuario: this._user.user.rut,
+                                usuario: this._user.user.id_persona,
                                 seleccion: 'reanimar',
                                 equipo: null
                             };
@@ -281,9 +286,9 @@ let DetalleAlertaPage = class DetalleAlertaPage {
                             this._http.cancelarAlerta(input).subscribe((res) => (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__awaiter)(this, void 0, void 0, function* () {
                                 console.log(JSON.stringify(res));
                                 console.log(res);
-                                if (res.resultado == "OK") {
+                                if (res.data == 1) {
                                     const toast = yield this.toastController.create({
-                                        header: 'Emergencia Cancelad',
+                                        header: 'Emergencia Cancelada',
                                         message: 'se ha cancelado la emergencia',
                                         position: 'bottom',
                                         duration: 3000,
@@ -291,6 +296,7 @@ let DetalleAlertaPage = class DetalleAlertaPage {
                                         translucent: true
                                     });
                                     yield toast.present();
+                                    this.close();
                                 }
                             }));
                         })
@@ -302,9 +308,9 @@ let DetalleAlertaPage = class DetalleAlertaPage {
                             this._http.cancelarAlerta(input).subscribe((res) => (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__awaiter)(this, void 0, void 0, function* () {
                                 console.log(JSON.stringify(res));
                                 console.log(res);
-                                if (res.resultado == "OK") {
+                                if (res.data == 1) {
                                     const toast = yield this.toastController.create({
-                                        header: 'Emergencia Cancelad',
+                                        header: 'Emergencia Cancelada',
                                         message: 'se ha cancelado la emergencia',
                                         position: 'bottom',
                                         duration: 3000,
@@ -312,6 +318,7 @@ let DetalleAlertaPage = class DetalleAlertaPage {
                                         translucent: true
                                     });
                                     yield toast.present();
+                                    this.close();
                                 }
                             }));
                         })
@@ -323,9 +330,9 @@ let DetalleAlertaPage = class DetalleAlertaPage {
                             this._http.cancelarAlerta(input).subscribe((res) => (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__awaiter)(this, void 0, void 0, function* () {
                                 console.log(JSON.stringify(res));
                                 console.log(res);
-                                if (res.resultado == "OK") {
+                                if (res.data == 1) {
                                     const toast = yield this.toastController.create({
-                                        header: 'Emergencia Cancelad',
+                                        header: 'Emergencia Cancelada',
                                         message: 'se ha cancelado la emergencia',
                                         position: 'bottom',
                                         duration: 3000,
@@ -333,6 +340,7 @@ let DetalleAlertaPage = class DetalleAlertaPage {
                                         translucent: true
                                     });
                                     yield toast.present();
+                                    this.close();
                                 }
                             }));
                         })
@@ -344,9 +352,9 @@ let DetalleAlertaPage = class DetalleAlertaPage {
                             this._http.cancelarAlerta(input).subscribe((res) => (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__awaiter)(this, void 0, void 0, function* () {
                                 console.log(JSON.stringify(res));
                                 console.log(res);
-                                if (res.resultado == "OK") {
+                                if (res.data == 1) {
                                     const toast = yield this.toastController.create({
-                                        header: 'Emergencia Cancelad',
+                                        header: 'Emergencia Cancelada',
                                         message: 'se ha cancelado la emergencia',
                                         position: 'bottom',
                                         duration: 3000,
@@ -354,6 +362,7 @@ let DetalleAlertaPage = class DetalleAlertaPage {
                                         translucent: true
                                     });
                                     yield toast.present();
+                                    this.close();
                                 }
                             }));
                         })
@@ -393,6 +402,8 @@ let DetalleAlertaPage = class DetalleAlertaPage {
     }
     generarPuntos(puntosRes) {
         return (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__awaiter)(this, void 0, void 0, function* () {
+            console.log("generando puntos equipos");
+            console.log(puntosRes);
             let emergencia = { name: '', position: { lat: this.latAlerta, lng: this.lngAlerta } };
             let emergenciaOp = { label: '', icon: 'https://www.google.com/mapfiles/dd-start.png' };
             //creamos marker mi ubicación        
@@ -407,14 +418,16 @@ let DetalleAlertaPage = class DetalleAlertaPage {
             this.markers.push(this.equipob);
             this.markerOptions.push(this.equipobOp);*/
             for (let p = 0; p < puntos.length; p++) {
-                let icono = 'https://www.google.com/mapfiles/marker' + puntos[p].letra + '.png';
-                let punto = {
-                    name: '',
-                    position: { lat: parseFloat(puntos[p].lat), lng: parseFloat(puntos[p].lng) }
-                };
-                let puntoOp = { label: '', icon: icono };
-                this.markers.push(punto);
-                this.markerOptions.push(puntoOp);
+                if (puntos[p].lat != null && puntos[p].lng != null) {
+                    let icono = 'https://www.google.com/mapfiles/marker' + puntos[p].letra + '.png';
+                    let punto = {
+                        name: '',
+                        position: { lat: parseFloat(puntos[p].lat), lng: parseFloat(puntos[p].lng) }
+                    };
+                    let puntoOp = { label: '', icon: icono };
+                    this.markers.push(punto);
+                    this.markerOptions.push(puntoOp);
+                }
             }
             console.log(this.markers);
             const bounds = yield this.getBounds(this.markers);

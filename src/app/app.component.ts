@@ -73,20 +73,23 @@ export class AppComponent {
     })
     PushNotifications.addListener('pushNotificationReceived',
       async (notification: PushNotificationSchema) => {
+        console.log("NOTIFICACION")
+        console.log(JSON.stringify(notification))
+        console.log('Push received: ' + JSON.stringify(notification));
         const alert = await this.alertController.create({
           cssClass: 'confirmaAlerta',
-          header: notification.data.title,
-          message: notification.data.body,
+          header: notification.title,
+          message: notification.body,
           buttons: [
             {
-              text: 'Cancelar',
+              text: 'Omitir',
               role: 'cancel',
               cssClass: 'secondary',
               handler: (blah) => {
                 console.log('Confirm Cancel: blah');
               }
             }, {
-              text: 'OK', 
+              text: 'Revisar', 
               handler: async () => {
                 this._route.navigateByUrl('/'+notification.data.vista+"/"+notification.data.id);                
               }
@@ -95,37 +98,6 @@ export class AppComponent {
         });
     
         await alert.present();
-       /* if(notification.data.message.title){
-          if(notification.data.id){
-            
-          }else{
-            this._route.navigateByUrl('/'+notification.data.vista);
-          }          
-        }*/
-        /*{"actionId":"tap",
-            "notification":{
-              "id":"0:1636941734614872%729f83c3729f83c3",
-              "data":{
-                "google.delivered_priority":"normal",
-                "google.sent_time":"1636941734597",
-                "google.ttl":"2419200",
-                "google.original_priority":"normal",
-                "id":"10001",
-                "from":"172098245835",
-                "vista":"alerta",
-                  "message":"{
-                    \"sound\":\"mysound\",
-                    \"icon\":\"myicon\",
-                    \"title\":\"LOGRADOOOOOO !!!!\",
-                    \"body\":\"CSM 
-                    \"}",
-                "gcm.n.analytics_data":"Bundle[mParcelledData.dataSize=100]",
-                "collapse_key":"com.cadempresa.app"
-              }
-            }
-          }
-        */
-        console.log('Push received: ' + JSON.stringify(notification));
       }
     );
     PushNotifications.addListener(
@@ -152,7 +124,7 @@ export class AppComponent {
         lng: this.coords.longitude,
       }
       if(this._geo.lat != this.coords.latitude || this._geo.lon != this.coords.longitude ){
-        let input = {usuario:this._user.user.rut}
+        let input = {usuario:this._user.user.id_persona}
         this._geo.setCordenates(this.center,input).subscribe((res) => {    
           this._geo.points = res.cerca; 
           console.log(res)

@@ -140,6 +140,7 @@ let EquiposPage = class EquiposPage {
             console.log("sin empresa seleccionada");
             this.router.navigate(['/bienvenida']);
         }
+        console.log("comienza lista");
         this.listar();
     }
     openMenu() {
@@ -150,7 +151,7 @@ let EquiposPage = class EquiposPage {
         return (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__awaiter)(this, void 0, void 0, function* () {
             let input = {};
             this._http.getEquipos(input).subscribe((res) => (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__awaiter)(this, void 0, void 0, function* () {
-                //console.log(res)
+                console.log(res);
                 if (res.resultado == "OK") {
                     for (let e = 0; e < res.equipos.length; e++) {
                         this.equipos.push(res.equipos[e]);

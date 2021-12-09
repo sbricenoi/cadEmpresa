@@ -78,10 +78,10 @@ export class AlertaPage implements OnInit {
     });
   }  
   async enviar(){   
-    let input = {usuario:this._user.user.rut}
+    let input = {usuario:this._user.user.id_persona}
     this._geo.generaAlerta(input).subscribe(async (res) => {  
       console.log(res) 
-      if(res.resultado=="OK"){
+      if(res.alerta>0){
         this.router.navigate(['/detalle-alerta/'+res.alerta]);
         const toast = await this.toastController.create({
           header:'Emergencia Alertada',

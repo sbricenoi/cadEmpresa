@@ -19,15 +19,57 @@
     <ion-card-content>
       <ion-item>
         <ion-label>Nombre</ion-label>
-        <ion-input value="{{_user.user.nombre}}"></ion-input>
+        <ion-input [(ngModel)]="_user.user.nombre_persona" value="{{_user.user.nombre_persona}}"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label>Apellido</ion-label>
-        <ion-input  value="{{_user.user.apellido}}"></ion-input>
+        <ion-input [(ngModel)]="_user.user.apellido_persona"   value="{{_user.user.apellido_persona}}"></ion-input>
       </ion-item>
+      <ion-item>
+        <ion-label>Correo</ion-label>
+        <ion-input  [(ngModel)]="_user.user.correo_persona"  value="{{_user.user.correo_persona}}"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Comuna</ion-label>
+        <ion-input [(ngModel)]="_user.user.comuna_persona"  value="{{_user.user.comuna_persona}}"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Ciudad</ion-label>
+        <ion-input  [(ngModel)]="_user.user.ciudad_persona"  value="{{_user.user.ciudad_persona}}"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Dirección</ion-label>
+        <ion-input [(ngModel)]="_user.user.direccion_persona"  value="{{_user.user.direccion_persona}}"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Fecha Nacimiento</ion-label>
+        <ion-input  [(ngModel)]="_user.user.fecha_de_nacimiento_persona"  value="{{_user.user.fecha_de_nacimiento_persona}}"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Telefono</ion-label>
+        <ion-input [(ngModel)]="_user.user.telefono_persona"   value="{{_user.user.telefono_persona}}"></ion-input>
+      </ion-item>
+      <ion-button (click)="guardar();">Guardar</ion-button>
     </ion-card-content>
   </ion-card>
-
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Tu Cuenta</ion-card-subtitle>
+      <ion-card-title>Cambiar Contraseña</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Contraseña Actual</ion-label>
+        <ion-input type="password" [(ngModel)]="ActualPass" value=""></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Nueva Contraseña</ion-label>
+        <ion-input type="password"  [(ngModel)]="NuevaPass"   value=""></ion-input>
+      </ion-item>
+      
+      <ion-button (click)="guardarPass();">Guardar</ion-button>
+    </ion-card-content>
+  </ion-card>
   <ion-card>
     <ion-card-header>
       <ion-card-subtitle>GPS Tiempo Real</ion-card-subtitle>

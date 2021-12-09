@@ -114,12 +114,25 @@ let BienvenidaPage = class BienvenidaPage {
         this.router = router;
         this.menu = menu;
         this._user = _user;
+        this.empresas = [];
     }
     ngOnInit() {
+        localStorage.removeItem('empresa');
+        this._user.empresa = null;
+        if (localStorage.getItem('empresas')) {
+            this.empresas = JSON.parse(localStorage.getItem('empresas') || '{}');
+            //this.user.token = localStorage.getItem('token');
+            console.log(this.empresas);
+            //this.cargarEmpresas()
+        }
+        else {
+            console.log("sin empresas");
+        }
     }
     redirec(ruta) {
         return (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__awaiter)(this, void 0, void 0, function* () {
             this._user.empresa = ruta;
+            localStorage.setItem('empresa', JSON.stringify(this._user.empresa));
             this.router.navigate(['/tabs']);
         });
     }
@@ -172,7 +185,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("<ion-header>\n  <ion-toolbar class=\"ion-padding\" style=\"text-align:center\">\n    <h1>CAD Empresa</h1>\n    <button slot=\"end\" (click)=\"openMenu()\"> <ion-icon name=\"menu-outline\"></ion-icon></button>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content [fullscreen]=\"true\">\n  <img src=\"../../assets/logo/LogoCAD5.png\" class=\"logo\" width=\"30%\"/>\n  <p class=\"texto-intro\">Selecciona la empresa con la que vas a utilizar la aplicación de empresa</p>\n  <ion-card (click)=\"redirec('vitaltime')\">\n    <img src=\"https://www.vitaltime.cl/wp-content/uploads/2021/02/LOGO-VT-180.png\" width=\"50%\"/>\n    <ion-card-title>Vital Time</ion-card-title>\n  </ion-card>\n  \n</ion-content>\n");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("<ion-header>\n  <ion-toolbar class=\"ion-padding\" style=\"text-align:center\">\n    <h1>CAD Empresa</h1>\n    <button slot=\"end\" (click)=\"openMenu()\"> <ion-icon name=\"menu-outline\"></ion-icon></button>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content [fullscreen]=\"true\">\n  <img src=\"../../assets/logo/LogoCAD5.png\" class=\"logo\" width=\"30%\"/>\n  <p class=\"texto-intro\">Selecciona la empresa con la que vas a utilizar la aplicación de empresa</p>\n  \n  <!--<ion-card (click)=\"redirec('vitaltime')\">\n    <img src=\"https://www.vitaltime.cl/wp-content/uploads/2021/02/LOGO-VT-180.png\" width=\"50%\"/>\n    <ion-card-title>Vital Time</ion-card-title>\n  </ion-card>-->\n  \n  <ion-card *ngFor=\"let em of empresas\" (click)=\"redirec(em.id_empresa)\">\n    <img src=\"https://cad.onlineweb.cl/{{em.logo_empresa}}\" width=\"50%\"/>\n    <ion-card-title>{{em.nombre_empresa}}</ion-card-title>\n  </ion-card>\n\n</ion-content>\n");
 
 /***/ })
 

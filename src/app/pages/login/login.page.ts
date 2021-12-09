@@ -13,6 +13,7 @@ import { UserService } from 'src/app/services/user.service';
 export class LoginPage implements OnInit {
   public rut="";
   public pass="";
+  public messError = "";
   public user = {
     rut:"",
     nombre:"",
@@ -75,7 +76,8 @@ export class LoginPage implements OnInit {
     let input = {rut:this.rut,clave:this.pass};
     this._http.login(input).subscribe((res)=>{
       console.log(res)
-      if(res.resultado.persona.id_persona != null){
+      if(res.error == null){
+        this.messError = "";
         //console.log(res.usuario)
         this._user.rut = res.resultado.persona.rut_persona;
         this._user.nombre = res.resultado.persona.nombre_persona;
@@ -112,7 +114,7 @@ export class LoginPage implements OnInit {
         })
         
       }else{
-        console.log(res.resultado)
+         this.messError = "usuario o contraseña no coincide";
       }
     })
    

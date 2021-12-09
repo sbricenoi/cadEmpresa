@@ -206,6 +206,8 @@ let AppComponent = class AppComponent {
             apellido: null
         };
         localStorage.removeItem('user');
+        localStorage.removeItem('empresas');
+        localStorage.removeItem('empresa');
         this.closeMenu();
     }
     addListeners() {
@@ -219,13 +221,16 @@ let AppComponent = class AppComponent {
             //console.log('Push registration success, token: ' + token.value)
         });
         _capacitor_push_notifications__WEBPACK_IMPORTED_MODULE_2__.PushNotifications.addListener('pushNotificationReceived', (notification) => (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__awaiter)(this, void 0, void 0, function* () {
+            console.log("NOTIFICACION");
+            console.log(JSON.stringify(notification));
+            console.log('Push received: ' + JSON.stringify(notification));
             const alert = yield this.alertController.create({
                 cssClass: 'confirmaAlerta',
-                header: notification.data.title,
-                message: notification.data.body,
+                header: notification.title,
+                message: notification.body,
                 buttons: [
                     {
-                        text: 'Cancelar',
+                        text: 'Omitir',
                         role: 'cancel',
                         cssClass: 'secondary',
                         handler: (blah) => {
@@ -233,7 +238,7 @@ let AppComponent = class AppComponent {
                         }
                     },
                     {
-                        text: 'OK',
+                        text: 'Revisar',
                         handler: () => (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__awaiter)(this, void 0, void 0, function* () {
                             this._route.navigateByUrl('/' + notification.data.vista + "/" + notification.data.id);
                         })
@@ -241,37 +246,6 @@ let AppComponent = class AppComponent {
                 ]
             });
             yield alert.present();
-            /* if(notification.data.message.title){
-               if(notification.data.id){
-                 
-               }else{
-                 this._route.navigateByUrl('/'+notification.data.vista);
-               }
-             }*/
-            /*{"actionId":"tap",
-                "notification":{
-                  "id":"0:1636941734614872%729f83c3729f83c3",
-                  "data":{
-                    "google.delivered_priority":"normal",
-                    "google.sent_time":"1636941734597",
-                    "google.ttl":"2419200",
-                    "google.original_priority":"normal",
-                    "id":"10001",
-                    "from":"172098245835",
-                    "vista":"alerta",
-                      "message":"{
-                        \"sound\":\"mysound\",
-                        \"icon\":\"myicon\",
-                        \"title\":\"LOGRADOOOOOO !!!!\",
-                        \"body\":\"CSM
-                        \"}",
-                    "gcm.n.analytics_data":"Bundle[mParcelledData.dataSize=100]",
-                    "collapse_key":"com.cadempresa.app"
-                  }
-                }
-              }
-            */
-            console.log('Push received: ' + JSON.stringify(notification));
         }));
         _capacitor_push_notifications__WEBPACK_IMPORTED_MODULE_2__.PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
             if (notification.notification.data.vista) {
@@ -295,7 +269,7 @@ let AppComponent = class AppComponent {
                     lng: this.coords.longitude,
                 };
                 if (this._geo.lat != this.coords.latitude || this._geo.lon != this.coords.longitude) {
-                    let input = { usuario: this._user.user.rut };
+                    let input = { usuario: this._user.user.id_persona };
                     this._geo.setCordenates(this.center, input).subscribe((res) => {
                         this._geo.points = res.cerca;
                         console.log(res);
@@ -505,6 +479,7 @@ let LoginPage = class LoginPage {
         this._user = _user;
         this.rut = "";
         this.pass = "";
+        this.messError = "";
         this.user = {
             rut: "",
             nombre: "",
@@ -516,92 +491,95 @@ let LoginPage = class LoginPage {
             this.router.navigateByUrl('/bienvenida');
         }
     }
+    /*
+      login(){
+        console.log(this.rut)
+        let input = {rut:this.rut,pass:this.pass};
+        this._http.login(input).subscribe((res)=>{
+          console.log(res)
+          if(res.resultado == "OK"){
+            console.log(res.usuario)
+            this._user.rut = res.usuario.rut;
+            this._user.nombre = res.usuario.nombre;
+            this._user.apellido = res.usuario.apellido;
+            this.user = res.usuario;
+            console.log(this.user)
+            this._user.user = this.user;
+            localStorage.setItem('user',JSON.stringify(this.user));
+    
+    
+            let input = {token: this._notification.token,usuario:this._user.rut}
+            let center = {
+              lat: this._geo.lat,
+              lng: this._geo.lon ,
+            }
+            this._geo.setCordenates(center,input).subscribe((res) => {
+              this._geo.points = res.cerca;
+              console.log(res)
+            });
+            
+            this._http.ingresoToken(input).subscribe((res)=>{
+              console.log(res)
+              if(res.resultado == "OK"){
+                if(this._user.validaStorage()){
+                  this.router.navigate(["/bienvenida"]);
+                }
+              }else{
+                console.log(res)
+              }
+             
+            })
+            
+          }else{
+            console.log(res.resultado)
+          }
+        })
+       
+      }*/
     login() {
-        console.log(this.rut);
-        let input = { rut: this.rut, pass: this.pass };
+        //console.log(this.rut)
+        let input = { rut: this.rut, clave: this.pass };
         this._http.login(input).subscribe((res) => {
             console.log(res);
-            if (res.resultado == "OK") {
-                console.log(res.usuario);
-                this._user.rut = res.usuario.rut;
-                this._user.nombre = res.usuario.nombre;
-                this._user.apellido = res.usuario.apellido;
-                this.user = res.usuario;
-                console.log(this.user);
+            if (res.error == null) {
+                this.messError = "";
+                //console.log(res.usuario)
+                this._user.rut = res.resultado.persona.rut_persona;
+                this._user.nombre = res.resultado.persona.nombre_persona;
+                this._user.apellido = res.resultado.persona.apellido_persona;
+                this.user = res.resultado.persona;
+                this._user.empresas = res.resultado.empresas;
+                //console.log(this.user)
                 this._user.user = this.user;
+                console.log(this._user.user);
                 localStorage.setItem('user', JSON.stringify(this.user));
-                let input = { token: this._notification.token, usuario: this._user.rut };
+                localStorage.setItem('empresas', JSON.stringify(this._user.empresas));
+                let input = { token: this._notification.token, usuario: this._user.user.id_persona };
                 let center = {
                     lat: this._geo.lat,
-                    lng: this._geo.lon,
+                    lng: this._geo.lon
                 };
                 this._geo.setCordenates(center, input).subscribe((res) => {
                     this._geo.points = res.cerca;
-                    console.log(res);
+                    //console.log(res)
                 });
                 this._http.ingresoToken(input).subscribe((res) => {
                     console.log(res);
-                    if (res.resultado == "OK") {
-                        if (this._user.validaStorage()) {
-                            this.router.navigate(["/bienvenida"]);
-                        }
+                    //if(res.resultado == "OK"){      
+                    //if(res.message == "Operation done successfully"){
+                    if (this._user.validaStorage()) {
+                        this.router.navigate(["/bienvenida"]);
                     }
-                    else {
-                        console.log(res);
-                    }
+                    /* }else{
+                       console.log(res)
+                     }*/
                 });
             }
             else {
-                console.log(res.resultado);
+                this.messError = "usuario o contraseña no coincide";
             }
         });
     }
-    /*login(){ //API DANIEL
-      //console.log(this.rut)
-      let input = {rut:this.rut,clave:this.pass};
-      this._http.login(input).subscribe((res)=>{
-        //console.log(res)
-        if(res.resultado.persona.id_persona != null){
-          //console.log(res.usuario)
-          this._user.rut = res.resultado.persona.rut_persona;
-          this._user.nombre = res.resultado.persona.nombre_persona;
-          this._user.apellido = res.resultado.persona.apellido_persona;
-          this.user = res.resultado.persona;
-          //console.log(this.user)
-          this._user.user = this.user;
-          console.log(this._user.user)
-          localStorage.setItem('user',JSON.stringify(this.user));
-  
-  
-          let input = {token: this._notification.token,usuario:this._user.user.id_persona}
-          let center = {
-            lat: this._geo.lat,
-            lng: this._geo.lon
-          }
-          this._geo.setCordenates(center,input).subscribe((res) => {
-            this._geo.points = res.cerca;
-            //console.log(res)
-          });
-          
-          this._http.ingresoToken(input).subscribe((res)=>{
-            console.log(res)
-            //if(res.resultado == "OK"){
-            if(res.resultado.message == "Operation done successfully"){
-              if(this._user.validaStorage()){
-                this.router.navigate(["/bienvenida"]);
-              }
-            }else{
-              console.log(res)
-            }
-           
-          })
-          
-        }else{
-          console.log(res.resultado)
-        }
-      })
-     
-    }*/
     setRut(valor) {
         this.rut = valor;
     }
@@ -672,29 +650,29 @@ let GeolocationService = class GeolocationService {
     setCordenates(cord, input) {
         this.lat = cord.lat;
         this.lon = cord.lng;
-        input.accion = "ingresoGPS";
-        input.lat = this.lat;
-        input.lng = this.lon;
+        input.accion = "ingreso_gps";
+        input.latitud = this.lat;
+        input.longitud = this.lon;
         input.tokenNotification = this._notification.token;
         let params = JSON.stringify(input);
         let headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__.HttpHeaders().set('Content-type', 'application/json');
         headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
         headers.append('Access-Control-Allow-Credentials', 'true');
         console.log("params:", params);
-        return this.httpClient.post("https://maqueta.onlineweb.cl/api.php", params, { headers: headers });
+        return this.httpClient.post("https://cad.onlineweb.cl/prueba_api_sb.php", params, { headers: headers });
         //console.log(cord)
     }
     generaAlerta(input) {
-        input.accion = "generaAlerta";
-        input.lat = this.lat;
-        input.lng = this.lon;
+        input.accion = "ingresar_alerta";
+        input.latitud = this.lat;
+        input.longitud = this.lon;
         input.tokenNotification = this._notification.token;
         let params = JSON.stringify(input);
         let headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__.HttpHeaders().set('Content-type', 'application/json');
         headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
         headers.append('Access-Control-Allow-Credentials', 'true');
         console.log("params:", params);
-        return this.httpClient.post("https://maqueta.onlineweb.cl/api.php", params, { headers: headers });
+        return this.httpClient.post("https://cad.onlineweb.cl/prueba_api_sb.php", params, { headers: headers });
     }
 };
 GeolocationService.ctorParameters = () => [
@@ -732,30 +710,29 @@ let HttpService = class HttpService {
     constructor(httpClient) {
         this.httpClient = httpClient;
         this._api = 'https://maqueta.onlineweb.cl/api.php';
-        this._apiTest = 'https://cad.onlineweb.cl/prueba_api.php';
-        this._apiProd = 'https://cad.onlineweb.cl/api.php';
+        this._apiTest = 'https://cad.onlineweb.cl/prueba_api_sb.php';
+        this._apiProd = 'https://cad.onlineweb.cl/prueba_api_sb.php';
     }
-    /*public login(input:any){
-       input.accion = "login";
-       
-       let params = JSON.stringify(input);
-       let headers = new HttpHeaders().set('Content-type','application/json');
-           headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
-           headers.append('Access-Control-Allow-Credentials', 'true');
-       console.log("params:",params)
-       return this.httpClient.post<any>(this._apiProd,params,{headers:headers});
-     }
-     public ingresoToken(input:any){
-       input.accion = "persona_token";
-       
-       let params = JSON.stringify(input);
-       let headers = new HttpHeaders().set('Content-type','application/json');
-           headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
-           headers.append('Access-Control-Allow-Credentials', 'true');
-       console.log("params:",params)
-       return this.httpClient.post<any>(this._apiTest,params,{headers:headers});
-     }*/
-    /*public prueba(input:any){
+    login(input) {
+        input.accion = "login_empresa";
+        let params = JSON.stringify(input);
+        let headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_0__.HttpHeaders().set('Content-type', 'application/json');
+        headers.append('Access-Control-Allow-Origin', '*');
+        headers.append('Access-Control-Allow-Credentials', 'true');
+        console.log("params:", params);
+        return this.httpClient.post(this._apiProd, params, { headers: headers });
+    }
+    ingresoToken(input) {
+        input.accion = "persona_token";
+        let params = JSON.stringify(input);
+        let headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_0__.HttpHeaders().set('Content-type', 'application/json');
+        headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
+        headers.append('Access-Control-Allow-Credentials', 'true');
+        console.log("params:", params);
+        return this.httpClient.post(this._apiProd, params, { headers: headers });
+    }
+    /*
+    public prueba(input:any){
       input.accion = "";
       
       let params = JSON.stringify(input);
@@ -765,24 +742,28 @@ let HttpService = class HttpService {
       console.log("params:",params)
       return this.httpClient.post<any>(this._api,params,{headers:headers});
     }*/
-    login(input) {
-        input.accion = "login";
-        let params = JSON.stringify(input);
-        let headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_0__.HttpHeaders().set('Content-type', 'application/json');
-        headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
-        headers.append('Access-Control-Allow-Credentials', 'true');
-        console.log("params:", params);
-        return this.httpClient.post(this._api, params, { headers: headers });
+    /*
+    public login(input:any){
+      input.accion = "login";
+      
+      let params = JSON.stringify(input);
+      let headers = new HttpHeaders().set('Content-type','application/json');
+          headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
+          headers.append('Access-Control-Allow-Credentials', 'true');
+      console.log("params:",params)
+      return this.httpClient.post<any>(this._api,params,{headers:headers});
     }
-    ingresoToken(input) {
-        input.accion = "ingresoToken";
-        let params = JSON.stringify(input);
-        let headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_0__.HttpHeaders().set('Content-type', 'application/json');
-        headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
-        headers.append('Access-Control-Allow-Credentials', 'true');
-        console.log("params:", params);
-        return this.httpClient.post(this._api, params, { headers: headers });
+    public ingresoToken(input:any){
+      input.accion = "ingresoToken";
+      
+      let params = JSON.stringify(input);
+      let headers = new HttpHeaders().set('Content-type','application/json');
+          headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
+          headers.append('Access-Control-Allow-Credentials', 'true');
+      console.log("params:",params)
+      return this.httpClient.post<any>(this._api,params,{headers:headers});
     }
+    */
     getEmpresas(input) {
         input.accion = "getEmpresas";
         input.usuario = 123;
@@ -791,7 +772,7 @@ let HttpService = class HttpService {
         headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
         headers.append('Access-Control-Allow-Credentials', 'true');
         console.log("params:", params);
-        return this.httpClient.post(this._api, params, { headers: headers });
+        return this.httpClient.post(this._apiProd, params, { headers: headers });
     }
     getAlertas(input) {
         input.accion = "getAlertas";
@@ -800,25 +781,25 @@ let HttpService = class HttpService {
         headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
         headers.append('Access-Control-Allow-Credentials', 'true');
         console.log("params:", params);
-        return this.httpClient.post(this._api, params, { headers: headers });
+        return this.httpClient.post(this._apiProd, params, { headers: headers });
     }
     getDetalleAlerta(input) {
-        input.accion = "getAlerta";
+        input.accion = "detalle_alerta";
         let params = JSON.stringify(input);
         let headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_0__.HttpHeaders().set('Content-type', 'application/json');
         headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
         headers.append('Access-Control-Allow-Credentials', 'true');
         console.log("params:", params);
-        return this.httpClient.post(this._api, params, { headers: headers });
+        return this.httpClient.post(this._apiProd, params, { headers: headers });
     }
     getEquipos(input) {
-        input.accion = "getEquipos";
+        input.accion = "listar_equipos_all";
         let params = JSON.stringify(input);
         let headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_0__.HttpHeaders().set('Content-type', 'application/json');
         headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
         headers.append('Access-Control-Allow-Credentials', 'true');
         console.log("params:", params);
-        return this.httpClient.post(this._api, params, { headers: headers });
+        return this.httpClient.post(this._apiProd, params, { headers: headers });
     }
     getEquipo(input) {
         input.accion = "getEquipo";
@@ -827,16 +808,16 @@ let HttpService = class HttpService {
         headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
         headers.append('Access-Control-Allow-Credentials', 'true');
         console.log("params:", params);
-        return this.httpClient.post(this._api, params, { headers: headers });
+        return this.httpClient.post(this._apiProd, params, { headers: headers });
     }
     cancelarAlerta(input) {
-        input.accion = "cancelarAlerta";
+        input.accion = "cancelar_empergencia";
         let params = JSON.stringify(input);
         let headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_0__.HttpHeaders().set('Content-type', 'application/json');
         headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
         headers.append('Access-Control-Allow-Credentials', 'true');
         console.log("params:", params);
-        return this.httpClient.post(this._api, params, { headers: headers });
+        return this.httpClient.post(this._apiProd, params, { headers: headers });
     }
     seleccionarAccion(input) {
         input.accion = "seleccionarAccion";
@@ -849,25 +830,25 @@ let HttpService = class HttpService {
         headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
         headers.append('Access-Control-Allow-Credentials', 'true');
         console.log("params:", params);
-        return this.httpClient.post(this._api, params, { headers: headers });
+        return this.httpClient.post(this._apiProd, params, { headers: headers });
     }
     getHistorial(input) {
-        input.accion = "getHistorial";
+        input.accion = "listar_historico_alerta";
         let params = JSON.stringify(input);
         let headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_0__.HttpHeaders().set('Content-type', 'application/json');
         headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
         headers.append('Access-Control-Allow-Credentials', 'true');
         console.log("params:", params);
-        return this.httpClient.post(this._api, params, { headers: headers });
+        return this.httpClient.post(this._apiProd, params, { headers: headers });
     }
     ingresoHistorial(input) {
-        input.accion = "seleccionaAccion";
+        input.accion = "insertar_historico";
         let params = JSON.stringify(input);
         let headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_0__.HttpHeaders().set('Content-type', 'application/json');
         headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
         headers.append('Access-Control-Allow-Credentials', 'true');
         console.log("params:", params);
-        return this.httpClient.post(this._api, params, { headers: headers });
+        return this.httpClient.post(this._apiProd, params, { headers: headers });
     }
 };
 HttpService.ctorParameters = () => [
@@ -1290,7 +1271,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("<ion-app>\n  <ion-menu side=\"end\" menuId=\"first\" *ngIf=\"_user.user.rut\">\n\n    <ion-header>\n      <ion-toolbar>\n        <ion-title>Configuración</ion-title>\n      </ion-toolbar>\n    </ion-header>\n  \n    <ion-content>\n      <ion-list>\n        <ion-item (click)=\"closeMenu()\" routerLink=\"/perfil\">Mi Perfil</ion-item>\n        <ion-item (click)=\"closeMenu()\" routerLink=\"/bienvenida\">Cambiar Empresa</ion-item>\n        <ion-item (click)=\"logout()\" routerLink=\"/login\">Cerrar Sesión</ion-item>\n      </ion-list>\n    </ion-content>\n  \n  </ion-menu>\n  <ion-router-outlet main></ion-router-outlet>\n  <ion-router-outlet></ion-router-outlet>\n</ion-app>\n");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("<ion-app>\n  <ion-menu side=\"end\" menuId=\"first\" *ngIf=\"_user.user.rut_persona\">\n\n    <ion-header>\n      <ion-toolbar>\n        <ion-title>Configuración</ion-title>\n      </ion-toolbar>\n    </ion-header>\n  \n    <ion-content>\n      <ion-list>\n        <ion-item (click)=\"closeMenu()\" routerLink=\"/perfil\">Mi Perfil</ion-item>\n        <ion-item (click)=\"closeMenu()\" routerLink=\"/bienvenida\">Cambiar Empresa</ion-item>\n        <ion-item (click)=\"logout()\" routerLink=\"/login\">Cerrar Sesión</ion-item>\n      </ion-list>\n    </ion-content>\n  \n  </ion-menu>\n  <ion-router-outlet main></ion-router-outlet>\n  <ion-router-outlet></ion-router-outlet>\n</ion-app>\n");
 
 /***/ }),
 
@@ -1305,7 +1286,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("\n<ion-content [fullscreen]=\"true\">\n  <img src=\"../../assets/logo/LogoCAD1.png\" width=\"100%\"/>\n  <ion-card>\n    \n    <ion-item>\n      <ion-label position=\"floating\">Usuario</ion-label>\n      <ion-input  type=\"text\" [value]=\"\" (change)=\"setRut($event.target.value)\" class=\"login-input\"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label position=\"floating\">Contraseña</ion-label>\n      <ion-input  type=\"text\" [value]=\"\" (change)=\"setPass($event.target.value)\" class=\"login-input\"></ion-input>\n    </ion-item>\n    <ion-button shape=\"round\" expand=\"block\" (click)=\"login()\">Iniciar Sesión</ion-button>\n\n  </ion-card>\n</ion-content>\n");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("\n<ion-content [fullscreen]=\"true\">\n  <img src=\"../../assets/logo/LogoCAD1.png\" width=\"100%\"/>\n  <ion-card>\n    \n    <ion-item>\n      <ion-label position=\"floating\">Usuario</ion-label>\n      <ion-input  type=\"text\" [value]=\"\" (change)=\"setRut($event.target.value)\" class=\"login-input\"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label position=\"floating\">Contraseña</ion-label>\n      <ion-input  type=\"text\" [value]=\"\" (change)=\"setPass($event.target.value)\" class=\"login-input\"></ion-input>\n    </ion-item>\n    <ion-button shape=\"round\" expand=\"block\" (click)=\"login()\">Iniciar Sesión</ion-button>\n    <p>{{messError}}</p>\n  </ion-card>\n</ion-content>\n");
 
 /***/ })
 

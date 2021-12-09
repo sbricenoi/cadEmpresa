@@ -185,10 +185,10 @@ let AlertaPage = class AlertaPage {
     }
     enviar() {
         return (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__awaiter)(this, void 0, void 0, function* () {
-            let input = { usuario: this._user.user.rut };
+            let input = { usuario: this._user.user.id_persona };
             this._geo.generaAlerta(input).subscribe((res) => (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__awaiter)(this, void 0, void 0, function* () {
                 console.log(res);
-                if (res.resultado == "OK") {
+                if (res.alerta > 0) {
                     this.router.navigate(['/detalle-alerta/' + res.alerta]);
                     const toast = yield this.toastController.create({
                         header: 'Emergencia Alertada',
