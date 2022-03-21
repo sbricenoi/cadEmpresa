@@ -148,4 +148,14 @@ export class HttpService {
     console.log("params:",params)
     return this.httpClient.post<any>(this._api,params,{headers:headers});   
   }
+  public getAgenda(input:any){    
+    input.accion = "listar_agendas";
+    let params = JSON.stringify(input);
+    let headers = new HttpHeaders()
+    .set('Content-type','application/json')
+    .set('Access-Control-Allow-Origin', 'http://localhost:8100')
+    .set('Access-Control-Allow-Credentials', 'true');
+    console.log("params:",params)
+    return this.httpClient.post<any>(this._api,params,{headers:headers});   
+  }
 }

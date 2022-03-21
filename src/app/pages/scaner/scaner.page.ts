@@ -41,7 +41,7 @@ export class ScanerPage implements OnInit {
   }
 
   async reserva(){
-    //var rut = this.obtenerData('https://wwwwasdasd.com?RUN=17768997-1&type=CEDULA&serial=1233243453465');
+    var rut = this.obtenerData('https://wwwwasdasd.com?RUN=17.768.997-1&type=CEDULA&serial=1233243453465');
     if(this.servicioWeb==null){
       const toast = await this.toastController.create({
         header: 'Sin servicios',
@@ -58,7 +58,8 @@ export class ScanerPage implements OnInit {
         backdropDismiss:false,
         cssClass: 'reserva-modal',
         componentProps: {
-          'rut': this.result,
+          'rut': rut,//this.result,
+          'sucursal': this.sucursal//this.result,
         },     
       })
       return await modal.present();

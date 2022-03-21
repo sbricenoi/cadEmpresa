@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams, ToastController } from '@ionic/angular';
+import { HttpService } from 'src/app/services/http.service';
 
 @Component({
   selector: 'app-detalle-reserva',
@@ -9,6 +10,7 @@ import { ModalController, NavParams, ToastController } from '@ionic/angular';
 export class DetalleReservaPage implements OnInit {
 
   public rut:string="";
+  public sucursal;
   public isChecked;
   public reserva:any={};
   public form=[
@@ -25,7 +27,7 @@ export class DetalleReservaPage implements OnInit {
  
   usuario = [
     {
-      rut:'17768997-1',
+      rut:'17.768.997-1',
       nombre:'Sebastian',
       apellido:'Briceño',
       correo:'sebastianbriceno.1991@gmail.com',
@@ -44,13 +46,19 @@ export class DetalleReservaPage implements OnInit {
     }    
   ]
 
-  constructor(public modal:ModalController,navParams: NavParams,public toastController: ToastController) {
+  constructor(
+    public modal:ModalController,
+    navParams: NavParams,
+    public toastController: ToastController,
+    public _http:HttpService) {
     this.rut = navParams.get('rut');
-    if(this.rut=='17768997-1'){
-      this.reserva = this.usuario[0]
+    this.sucursal = navParams.get('sucursal');
+    this.getReserva()
+    if(this.rut=='17.768.997-1'){
+      this.reserva.reservado = this.usuario[0]
     }
     if(this.rut=='16941170-0'){
-      this.reserva = this.usuario[1]
+      this.reserva.reservado = this.usuario[1]
     }
     //console.log(this.form)
    }
@@ -58,6 +66,39 @@ export class DetalleReservaPage implements OnInit {
   ngOnInit() {}
   async cerrar(){
       this.modal.dismiss();
+  }
+  async getReserva(){
+    let input = {
+      id_persona: this.rut,
+      sucursal_agenda: this.sucursal
+    }
+    this._http.getAgenda(input).subscribe(async (res)=>{
+      console.log(res)
+      if(res.resultado=="OK"){
+        this.reserva = {
+          rut:res.datos.rut_persona,
+          nombre:res.datos.nombre_persona,
+          apellido:res.datos.apellido_persona,
+          correo:res.datos.correo_persona,
+          telefono:res.datos.telefono_persona,
+          avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmr_FKgCoFkoxhbzHlwhmLBpIKvkAepBMEjQ&usqp=CAU',
+          reservado: true
+        }
+      }else{
+        
+        this.reserva = {
+          rut:'17.768.997-1',
+          nombre:'Sebastian',
+          apellido:'Briceño',
+          correo:'sebastianbriceno.1991@gmail.com',
+          telefono:'+56964506888',
+          avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmr_FKgCoFkoxhbzHlwhmLBpIKvkAepBMEjQ&usqp=CAU',
+          reservado: false
+        }
+      }
+    },(error)=>{
+      alert("error:")
+    })
   }
   async guardar(){
     //console.log(this.form)
