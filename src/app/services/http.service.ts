@@ -5,8 +5,8 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
   providedIn: 'root'
 })
 export class HttpService {
-  private _api = 'https://maqueta.onlineweb.cl/api.php';
-  private _apiTest = 'https://cad.onlineweb.cl/prueba_api.php';
+  private _api = 'https://cad.onlineweb.cl/prueba_api_sb.php';
+  private _apiTest = 'https://admin-vitaltime.vitaltime.onlineweb.cl/prueba_api.php';
   private _apiProd = 'https://cad.onlineweb.cl/api.php';
   constructor(private httpClient: HttpClient) { }
 
@@ -41,17 +41,18 @@ export class HttpService {
     return this.httpClient.post<any>(this._api,params,{headers:headers});   
   }*/
   public login(input:any){    
-    input.accion = "login";
+    input.accion = "login_empresa";
     
     let params = JSON.stringify(input);
-    let headers = new HttpHeaders().set('Content-type','application/json');
-        headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
-        headers.append('Access-Control-Allow-Credentials', 'true');
+    let headers = new HttpHeaders()
+    .set('Content-type','application/json')
+    .set('Access-Control-Allow-Origin', 'http://localhost:8100')
+    .set('Access-Control-Allow-Credentials', 'true');
     console.log("params:",params)
     return this.httpClient.post<any>(this._api,params,{headers:headers});   
   }
   public ingresoToken(input:any){    
-    input.accion = "ingresoToken";
+    input.accion = "persona_token";
     
     let params = JSON.stringify(input);
     let headers = new HttpHeaders().set('Content-type','application/json');
@@ -64,9 +65,9 @@ export class HttpService {
     input.accion = "getEmpresas";
     input.usuario = 123;
     let params = JSON.stringify(input);
-    let headers = new HttpHeaders().set('Content-type','application/json');
-        headers.append('Access-Control-Allow-Origin', 'http://localhost:8100');
-        headers.append('Access-Control-Allow-Credentials', 'true');
+    let headers = new HttpHeaders().set('Content-type','application/json')
+      .set('Access-Control-Allow-Origin', 'http://localhost:8100')
+      .set('Access-Control-Allow-Credentials', 'true');
     console.log("params:",params)
     return this.httpClient.post<any>(this._api,params,{headers:headers});   
   }

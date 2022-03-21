@@ -13,6 +13,7 @@ import { UserService } from 'src/app/services/user.service';
 export class LoginPage implements OnInit {
   public rut="";
   public pass="";
+  public messError = "";
   public user = {
     rut:"",
     nombre:"",
@@ -27,19 +28,23 @@ export class LoginPage implements OnInit {
   }
   login(){
     console.log(this.rut)
-    let input = {rut:this.rut,pass:this.pass};
+    let input = {rut:this.rut,clave:this.pass};
     this._http.login(input).subscribe((res)=>{
       console.log(res)
-      if(res.resultado == "OK"){
-        console.log(res.usuario)
-        this._user.rut = res.usuario.rut;
-        this._user.nombre = res.usuario.nombre;
-        this._user.apellido = res.usuario.apellido;
-        this.user = res.usuario;     
-        console.log(this.user)
+      if(res.error == null){
+        this.messError = "";
+        //console.log(res.usuario)
+        this._user.rut = res.resultado.persona.rut_persona;
+        this._user.nombre = res.resultado.persona.nombre_persona;
+        this._user.apellido = res.resultado.persona.apellido_persona;
+        this.user = res.resultado.persona;   
+        this._user.empresas = res.resultado.empresas;   
+        //console.log(this.user)
         this._user.user = this.user;
+        console.log(this._user.user)
         localStorage.setItem('user',JSON.stringify(this.user));
-
+        localStorage.setItem('empresas',JSON.stringify(this._user.empresas));
+  
 
         let input = {token: this._notification.token,usuario:this._user.rut}
         let center = {
@@ -53,13 +58,11 @@ export class LoginPage implements OnInit {
         
         this._http.ingresoToken(input).subscribe((res)=>{
           console.log(res)
-          if(res.resultado == "OK"){      
+           
             if(this._user.validaStorage()){
               this.router.navigate(["/bienvenida"]);
             }
-          }else{
-            console.log(res)
-          }
+          
          
         })
         

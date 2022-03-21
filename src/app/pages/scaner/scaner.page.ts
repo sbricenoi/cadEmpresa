@@ -1,6 +1,6 @@
 import { DetalleReservaPage } from './../detalle-reserva/detalle-reserva.page';
 import { Component, OnInit } from '@angular/core';
-import { ModalController, AlertController, MenuController } from '@ionic/angular';
+import { ModalController, AlertController, MenuController, ToastController } from '@ionic/angular';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { UserService } from 'src/app/services/user.service';
 import { Router } from '@angular/router';
@@ -13,13 +13,15 @@ import { Router } from '@angular/router';
 export class ScanerPage implements OnInit {
   result = null;
   scanActive = false;
-
+  sucursal;
+  servicioWeb;
 
   constructor( public modal:ModalController, 
     public alert:AlertController,
     public menu:MenuController,
     public _user:UserService,
-    private router:Router) {}
+    private router:Router,
+    public toastController: ToastController) {}
   ngOnInit(){
     if(!this._user.empresa){
       console.log("sin empresa seleccionada")
@@ -40,30 +42,54 @@ export class ScanerPage implements OnInit {
 
   async reserva(){
     //var rut = this.obtenerData('https://wwwwasdasd.com?RUN=17768997-1&type=CEDULA&serial=1233243453465');
-    const modal = await this.modal.create({
-      component:DetalleReservaPage,
-      animated: true,
-      mode: 'ios',
-      backdropDismiss:false,
-      cssClass: 'reserva-modal',
-      componentProps: {
-        'rut': this.result,
-      },     
-    })
-    return await modal.present();
+    if(this.servicioWeb==null){
+      const toast = await this.toastController.create({
+        header: 'Sin servicios',
+        message: 'Tu empresa no tiene servicios disponibles',
+        position: 'top',
+        duration:2000
+      });
+      await toast.present();
+    }else if(this.servicioWeb=="reservaMOP"){
+      const modal = await this.modal.create({
+        component:DetalleReservaPage,
+        animated: true,
+        mode: 'ios',
+        backdropDismiss:false,
+        cssClass: 'reserva-modal',
+        componentProps: {
+          'rut': this.result,
+        },     
+      })
+      return await modal.present();
+    }else if(this.servicioWeb=="reservaCOPEUCH"){
+      
+    }
+    
   }
 
   async startScanner(){
-    const allowed = await this.checkPermission();
-    if(allowed){
-      this.scanActive = true;
-      const result = await BarcodeScanner.startScan();
-      if(result.hasContent){
-        this.result = await this.obtenerData(result.content);
-        this.scanActive = false;
-        this.reserva();
-      }
-    }    
+    if(this.sucursal!=null){
+      const allowed = await this.checkPermission();
+      if(allowed){
+        this.scanActive = true;
+        const result = await BarcodeScanner.startScan();
+        if(result.hasContent){
+          this.result = await this.obtenerData(result.content);
+          this.scanActive = false;
+          this.reserva();
+        }
+      }    
+    }else{
+      const toast = await this.toastController.create({
+        header: 'Selecciona Sucursal',
+        message: 'Debes seleccionar una sucursal',
+        position: 'top',
+        duration:2000
+      });
+      await toast.present();
+    }
+    
   }
 
   async stopScanner(){    

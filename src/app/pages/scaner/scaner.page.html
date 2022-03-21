@@ -9,6 +9,20 @@
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true" [style.--background]="scanActive ? '#00000000':'#fff'">
+  <ion-item>
+    <ion-label>Servicio</ion-label>
+    <ion-select [(ngModel)]="servicioWeb" name="servicioWeb" placeholder="Seleccionar">
+      <ion-select-option value="reservaMOP">Reserva Espacios</ion-select-option>
+      <ion-select-option value="reservaCOPEUCH">Agenda Vacuna</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>Sucursal</ion-label>
+    <ion-select [(ngModel)]="sucursal" name="sucursal" placeholder="Seleccionar">
+      <ion-select-option value="1">Sucursal 1</ion-select-option>
+      <ion-select-option value="2">Sucursal 2</ion-select-option>
+    </ion-select>
+  </ion-item>
   <ion-button expand="block" (click)="reserva()" >Mostrar Reserva</ion-button>
 
 
