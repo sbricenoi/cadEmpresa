@@ -60,7 +60,6 @@ export class DetalleReservaPage implements OnInit {
     if(this.rut=='16941170-0'){
       this.reserva.reservado = this.usuario[1]
     }
-    //console.log(this.form)
    }
 
   ngOnInit() {}
