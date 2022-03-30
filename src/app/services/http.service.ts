@@ -8,6 +8,7 @@ export class HttpService {
   private _api = 'https://cad.onlineweb.cl/prueba_api_sb.php';
   private _apiTest = 'https://admin-vitaltime.vitaltime.onlineweb.cl/prueba_api.php';
   private _apiProd = 'https://cad.onlineweb.cl/api.php';
+  private _api_rut = 'https://reloj.onlineweb.cl/api.php';
   constructor(private httpClient: HttpClient) { }
 
  /*public login(input:any){    
@@ -46,7 +47,7 @@ export class HttpService {
     let params = JSON.stringify(input);
     let headers = new HttpHeaders()
     .set('Content-type','application/json')
-    .set('Access-Control-Allow-Origin', 'http://localhost:8100')
+    .set('Access-Control-Allow-Origin', '*')
     .set('Access-Control-Allow-Credentials', 'true');
     console.log("params:",params)
     return this.httpClient.post<any>(this._api,params,{headers:headers});   
@@ -157,5 +158,15 @@ export class HttpService {
     .set('Access-Control-Allow-Credentials', 'true');
     console.log("params:",params)
     return this.httpClient.post<any>(this._api,params,{headers:headers});   
+  }
+  public getRutInfo(input:any){    
+    input.accion = "buscarRut";
+    let params = JSON.stringify(input);
+    let headers = new HttpHeaders()
+    .set('Content-type','application/json')
+    .set('Access-Control-Allow-Origin', 'http://localhost:8100')
+    .set('Access-Control-Allow-Credentials', 'true');
+    console.log("params:",params)
+    return this.httpClient.post<any>(this._api_rut,params,{headers:headers});   
   }
 }

@@ -4,6 +4,7 @@ import { ModalController, AlertController, MenuController, ToastController } fro
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { UserService } from 'src/app/services/user.service';
 import { Router } from '@angular/router';
+import { HttpService } from 'src/app/services/http.service';
 
 @Component({
   selector: 'app-scaner',
@@ -16,7 +17,9 @@ export class ScanerPage implements OnInit {
   sucursal;
   servicioWeb;
 
-  constructor( public modal:ModalController, 
+  constructor(
+    public _http:HttpService,
+    public modal:ModalController, 
     public alert:AlertController,
     public menu:MenuController,
     public _user:UserService,
@@ -41,7 +44,7 @@ export class ScanerPage implements OnInit {
   }
 
   async reserva(){
-    var rut = this.obtenerData('https://wwwwasdasd.com?RUN=17.768.997-1&type=CEDULA&serial=1233243453465');
+    var rut = this.result;//this.obtenerData('https://wwwwasdasd.com?RUN=17.768.997-1&type=CEDULA&serial=1233243453465');
     if(this.servicioWeb==null){
       const toast = await this.toastController.create({
         header: 'Sin servicios',
@@ -65,6 +68,15 @@ export class ScanerPage implements OnInit {
       return await modal.present();
     }else if(this.servicioWeb=="reservaCOPEUCH"){
       
+    }else if(this.servicioWeb=="consultaRut"){
+      let input = {rut:rut}
+      this._http.getRutInfo(input).subscribe(async (res)=>{
+        console.log(JSON.stringify(res))
+        console.log(res)
+        if(res.result=="OK"){
+          alert(res.data)
+        }               
+      })
     }
     
   }
